@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+    <link rel="stylesheet" href="assets/css/Pretty-Registration-Form.css">
+    <link rel="stylesheet" href="assets/css/scrollbar.css">
+    <link rel="stylesheet" href="assets/css/loader.css">
+
+</head>
+
+<body id="scrollbar">
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-white portfolio-navbar gradient">
+        <div class="container"><a class="navbar-brand logo" href="#">Dacade Games</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navbarNav">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="cv.html">CV</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="hire-me.html">Hire me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page lanidng-page">
+            <div id="loadings"><img src="assets\img\loading.svg">
+                <div><b>LOADING</b></div>
+            </div>
+        <section class="portfolio-block block-intro">
+            <div class="container">
+                <div class="avatar" style="background-image:url(&quot;assets/img/avatars/avatar.jpg&quot;);"></div>
+                <div class="about-me">
+                    <p>Welcome, get your games here at cheap prices</p>
+                </div>
+            </div>
+        </section>
+        <section class="portfolio-block photography" id="body">
+            
+        </section>
+        <section class="portfolio-block call-to-action border-bottom">
+            <div class="container">
+                <div class="d-flex justify-content-center align-items-center content">
+                    <h3><strong>Like what you see?</strong></h3>
+                </div>
+                <div class="d-flex justify-content-center align-items-center content">
+                    <h3><strong>Register Game Below!</strong></h3>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="row register-form">
+                            <div class="col-md-8 offset-md-2">
+                                <form class="custom-form">
+                                    <h1>Register Form</h1>
+                                    <div class="form-row form-group">
+                                        <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Name </label></div>
+                                        <div class="col-sm-6 input-column"><input class="form-control" type="text" id="name"></div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                        <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Image Url</label></div>
+                                        <div class="col-sm-6 input-column"><input class="form-control" type="email" id="imageUrl"></div>
+                                    </div>
+                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Price</label></div>
+                                    <div></div><input class="form-control" type="number" id="price">
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">I've read and accept the terms and conditions</label></div><button class="btn btn-light submit-button"
+                                        type="button" id="regButton">Register!</button></form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <section class="portfolio-block website gradient">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-lg-5 offset-lg-1 text">
+                    <h3>Games Rock!</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget velit ultricies, feugiat est sed, efr nunc, vivamus vel accumsan dui. Quisque ac dolor cursus, volutpat nisl vel, porttitor eros.</p>
+                </div>
+                <div class="col-md-12 col-lg-5">
+                    <div class="portfolio-laptop-mockup">
+                        <div class="screen">
+                            <div class="screen-content" style="background-image:url(&quot;assets/img/tech/image6.png&quot;);"></div>
+                        </div>
+                        <div class="keyboard"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="links"><a href="#">About me</a><a href="#">Contact me</a><a href="#">Projects</a></div>
+            <div class="social-icons"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-instagram-outline"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a></div>
+        </div>
+    </footer>
+
+    <script id="template" type="x-tmpl-mustache">
+        {{#GameArray}}
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-md-6 col-lg-4 item zoom-on-hover">
+                <section class="portfolio-block mobile-app gradient">
+                    <div class="container align-items-center">
+                        <div class="row align-items-center">
+                            <div class="col-md-12 col-lg-3 offset-lg-2">
+                                <div class="portfolio-phone-mockup">
+                                    <div class="phone-screen" style="background-image:url(&quot;{{imageUrl}}quot;);"></div>
+                                    <div class="home-button"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-5 text">
+                                <h3>{{name}}</h3>
+                                <h4>{{price}}</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget velit ultricies, feugiat est sed, efficitur nunc, vivamus vel accumsan dui. Quisque ac dolor cursus, volutpat nisl vel, porttitor eros.</p>
+                                <button
+                                    class="btn btn-primary" type="button">Buy Now!!</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                </section>
+            </div>
+            <div class="col-md-6 col-lg-4 item zoom-on-hover"><a href="#"></a></div>
+            <div class="col-md-6 col-lg-4 item zoom-on-hover"><a href="#"></a></div>
+        </div>
+    </div>
+    {{/GameArray}}
+</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.js"></script>
+    <script src="https://unpkg.com/@aeternity/aepp-sdk/dist/aepp-sdk.browser-script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/index.js"></script>
+</body>
+
+</html>

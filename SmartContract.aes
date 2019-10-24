@@ -1,0 +1,47 @@
+contract GameDev =
+  
+    
+  record games = 
+    {
+    creatorAddress : address,
+    imageUrl : string,
+    name : string,
+    price : int
+    }
+    
+  record state = {
+    game : map(int, games),
+    gameLength : int}
+    
+  entrypoint init() = { 
+    game = {},
+    gameLength = 0}
+
+  
+  entrypoint getGame(index : int) = 
+    switch(Map.lookup(index, state.game))
+      None => abort("Game does not exist with this index")
+      Some(x) => x  
+    
+    
+    //create a game
+    
+  stateful entrypoint sellGame( imageUrl' : string, name' : string, price' : int) = 
+    let newGame = {
+      creatorAddress  = Call.caller,
+      imageUrl = imageUrl',
+      name = name', 
+      price = price'}
+    let index = getGameLength() + 1
+    put(state{game[index] = newGame, gameLength = index})
+    
+    
+    //returns lenght of games registered
+  entrypoint getGameLength() : int = 
+    state.gameLength
+  
+  
+
+    
+  
+    
