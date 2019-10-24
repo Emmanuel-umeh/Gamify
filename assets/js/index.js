@@ -7,7 +7,8 @@ contract GameDev =
     creatorAddress : address,
     imageUrl : string,
     name : string,
-    price : int
+    price : int,
+    description : string
     }
     
   record state = {
@@ -27,12 +28,13 @@ contract GameDev =
     
     //create a game
     
-  stateful entrypoint sellGame( imageUrl' : string, name' : string, price' : int) = 
+  stateful entrypoint sellGame( imageUrl' : string, name' : string, price' : int, description' : string) = 
     let newGame = {
       creatorAddress  = Call.caller,
       imageUrl = imageUrl',
       name = name', 
-      price = price'}
+      price = price',
+      description = description'}
     let index = getGameLength() + 1
     put(state{game[index] = newGame, gameLength = index})
     
@@ -44,7 +46,7 @@ contract GameDev =
     `; 
 
 
-const contractAddress = 'ct_2R1TLCKVVqgRRJgiAEXMof6rv8crUKSq67hoB7PT7aDQ1QHoi6';
+const contractAddress = 'ct_qhkue4PcZTFJwrAvNKa8sAShYD3DE6McrB98vMdAhHPpua6HZ';
 var GameArray = [];
 var client = null;
 var gameLength = 0;
@@ -106,7 +108,8 @@ window.addEventListener('load', async () => {
     GameArray.push({
         imageUrl : games.imageUrl,
         name : games.name, 
-        price : games.price
+        price : games.price,
+        description : games.description
         
 
      
@@ -126,8 +129,10 @@ $('#regButton').click(async function(){
     url = ($('#imageUrl').val()),
    
     price = ($('#price').val());
+
+    description = ($('#description').val());
     prices = parseInt(price,10)
-    await contractCall('sellGame', [url,name,prices], prices)
+    await contractCall('sellGame', [url,name,prices,description], prices)
    
     console.log(url)
     console.log(name)
@@ -140,6 +145,7 @@ $('#regButton').click(async function(){
         name : name,
         url : url,
         price : prices,
+        description : description
 
         
         
