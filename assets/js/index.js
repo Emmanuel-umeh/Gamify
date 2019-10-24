@@ -1,52 +1,84 @@
 const contractSource = `
-contract GameDev =
-  
-    
-  record games = 
-    {
-    creatorAddress : address,
-    imageUrl : string,
-    name : string,
-    price : int,
-    description : string
-    }
-    
-  record state = {
-    game : map(int, games),
-    gameLength : int}
-    
-  entrypoint init() = { 
-    game = {},
-    gameLength = 0}
+contract Gamify =
 
+  record game = {
+    id:int,
+    name: string,
+    price:int,
+    purchased:bool,
+    description : string,
+    images:string,
+    owner:address
+    
+    }
   
-  entrypoint getGame(index : int) = 
-    switch(Map.lookup(index, state.game))
-      None => abort("Game does not exist with this index")
-      Some(x) => x  
+  
+  record state = 
+    {
+      gameLength : int,
+      games : map(int, game)
+    }
+  
+  entrypoint init() = 
+    { games = {}, 
+      gameLength = 0}
+  
     
-    
-    //create a game
-    
-  stateful entrypoint sellGame( imageUrl' : string, name' : string, price' : int, description' : string) = 
-    let newGame = {
-      creatorAddress  = Call.caller,
-      imageUrl = imageUrl',
-      name = name', 
-      price = price',
-      description = description'}
-    let index = getGameLength() + 1
-    put(state{game[index] = newGame, gameLength = index})
-    
-    
-    //returns lenght of games registered
   entrypoint getGameLength() : int = 
     state.gameLength
+  
+  stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
+    let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=false, owner=Call.caller}
+    let index = getGameLength() + 1
+    put(state{games[index] = game, gameLength  = index})
+
+  
+  entrypoint get_game_by_index(index:int) : game = 
+    switch(Map.lookup(index, state.games))
+      None => abort("Game does not exist with this index")
+      Some(x) => x  
+  
+  payable stateful entrypoint buyGame(_id:int)=
+    let game = get_game_by_index(_id) // get the current game with the id
+    
+    let  _seller  = game.owner : address
+    
+    require(game.id > 0,abort("NOT A GAME ID"))
+    
+    // require that there is enough AE in the transaction
+    require(Call.value >= game.price,abort("You Don't Have Enough AE"))
+    
+    // require that the game has not been purchased
+    
+    require(!game.purchased,abort("GAME ALREADY PURCHASED"))
+    
+    // require that the buyer is not the seller
+    
+    require(_seller != Call.caller,"SELLER CAN'T PURCHASE HIS ITEM")
+    
+    // transfer ownership
+    
+    //game.owner = Call.caller
+    
+    // mark as  purchased
+    
+    //game.purchased = true 
+    
+    // update the game
+    let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = true, owner=Call.caller}
+    
+    put(state{games[_id] = updated_game})
+    
+    // sends the amount
+    
+    Chain.spend(_seller, Call.value)
  
     `; 
+    
+    
 
 
-const contractAddress = 'ct_qhkue4PcZTFJwrAvNKa8sAShYD3DE6McrB98vMdAhHPpua6HZ';
+const contractAddress = 'ct_oBWZxezUbHRWBBeLKB2LR59ms8rLu2NGhX7mCDWqA94SW8DE1';
 var GameArray = [];
 var client = null;
 var gameLength = 0;
@@ -97,16 +129,16 @@ window.addEventListener('load', async () => {
   gameLength = await callStatic('getGameLength', []); 
 
   for(let i = 1; i<= gameLength ; i++ ){
-    const games =  await callStatic('getGame', [i]);
+    const games =  await callStatic('get_game_by_index', [i]);
     
     console.log("for loop reached", "pushing to array")
-    console.log(games.imageUrl)
+    console.log(games.images)
     console.log(games.name)
     console.log(games.price)
     
 
     GameArray.push({
-        imageUrl : games.imageUrl,
+        imageUrl : games.images,
         name : games.name, 
         price : games.price,
         description : games.description
@@ -132,7 +164,7 @@ $('#regButton').click(async function(){
 
     description = ($('#description').val());
     prices = parseInt(price,10)
-    await contractCall('sellGame', [url,name,prices,description], prices)
+    await contractCall('addGame', [name,prices,url,description], prices)
    
     console.log(url)
     console.log(name)
