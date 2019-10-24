@@ -126,19 +126,20 @@ $('#regButton').click(async function(){
     url = ($('#imageUrl').val()),
    
     price = ($('#price').val());
-    await contractCall('sellGame', [imageUrl,name,price], 0)
+    prices = parseInt(price,10)
+    await contractCall('sellGame', [url,name,prices], prices)
    
-    console.log(imageUrl)
+    console.log(url)
     console.log(name)
-    console.log(price)
-
+    console.log(prices)
+    console.log(typeof(prices))
    
 
     
     GameArray.push({
         name : name,
-        url : imageUrl,
-        price : price,
+        url : url,
+        price : prices,
 
         
         
