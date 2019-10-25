@@ -1,13 +1,18 @@
-
-@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
-
-*,html{margin:0;padding:0}
-
-
-svg{
-    width: 100px;
+.loader{
+    margin: 0 0 2em;
     height: 100px;
-    margin: 20px;
-    display:inline-block;
+    width: 20%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: inline-block;
+    vertical-align: top;
   }
   
+  /*
+    Set the color of the icon
+  */
+  svg path,
+  svg rect{
+    fill: #FF6700;
+  }
