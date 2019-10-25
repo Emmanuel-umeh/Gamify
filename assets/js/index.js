@@ -135,6 +135,15 @@ window.addEventListener('load', async () => {
     console.log(games.images)
     console.log(games.name)
     console.log(games.price)
+
+    $(function(){
+      $(document).on('click', '#buyButton', function(e) {
+        $(this).html('<i class="fa fa-heart" aria-hidden="true"></i> You bought this');
+        $(this).children('.fa-heart').addClass('animate-like');
+  
+        
+      });
+  });
     
 
     GameArray.push({
