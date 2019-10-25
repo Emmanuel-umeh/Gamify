@@ -80,6 +80,7 @@ contract Gamify =
 
 const contractAddress = 'ct_oBWZxezUbHRWBBeLKB2LR59ms8rLu2NGhX7mCDWqA94SW8DE1';
 var GameArray = [];
+var SoldArray = []
 var client = null;
 var gameLength = 0;
 
@@ -198,20 +199,30 @@ $("#body").click(".btn-2", async function(event){
     // await contractCall('buyGame', [], prices)s
    
     const dataIndex = event.target.id
-    const gamePrice = GameArray[dataIndex +1 ].price
+    const gamePrice = GameArray[dataIndex -1].price
     console.log(gamePrice)
     const gameid =  GameArray[dataIndex].id - 1
     console.log("Price of product",gamePrice)
 
     
     if(GameArray[dataIndex].purchased = false){
-     await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10))
+      await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10))
+      const game = await contractCall('get_game_by_index', [dataIndex])
+      SoldArray.push({
+        soldurl : game.images,
+        soldName : game.name, 
+        soldPrice : game.price,
+        soldDescription : game.description
+        
+      })
+
     }else{
       const messageId = document.getElementById(`${gameid}`)
       console.log(messageId)
       
-      messageId.innerHTML = "Already Purchased"
-
+      messageId.innerHTML = "Already Purchased";
+      
+     
     }
   // sold = purchased_game.purchased 
     // GameArray.push({
