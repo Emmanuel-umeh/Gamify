@@ -139,6 +139,7 @@ window.addEventListener('load', async () => {
    
 
     GameArray.push({
+        id : games.id,
         imageUrl : games.images,
         name : games.name, 
         price : games.price,
@@ -175,6 +176,7 @@ $('#regButton').click(async function(){
 
     
     GameArray.push({
+        id : GameArray.length + 1,
         name : name,
         url : url,
         price : prices,
@@ -195,6 +197,7 @@ $('.button').click(async function(){
    
     const dataIndex = event.target.id
     const gamePrice = GameArray[dataIndex].price
+    const gameid =  GameArray[dataIndex].id
     console.log("Price of product",GameArray.price)
     const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
     console.log("Purchase:", purchased_game)
