@@ -207,6 +207,7 @@ $("#body").click(".btn-2", async function(event){
      await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10))
     }else{
       const messageId = document.getElementById(`${gameid}`)
+      console.log(messageId)
       
       messageId.innerHTML = "Already Purchased"
 
