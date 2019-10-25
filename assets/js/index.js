@@ -191,7 +191,7 @@ $('#regButton').click(async function(){
 
 $('.button').click(async function(){
   $("#loadings").show();
-
+    console.log("Button has been clicked")
 
     // await contractCall('buyGame', [], prices)
    
