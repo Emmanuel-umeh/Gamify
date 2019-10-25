@@ -165,7 +165,7 @@ window.addEventListener('load', async () => {
         imageUrl : games.images,
         name : games.name, 
         price : games.price,
-        description : games.description
+        purchased : games.purchased
         
 
      
@@ -211,7 +211,7 @@ $('#regButton').click(async function(){
 });
 
 $('#BuyButton').click(async function(){
-  $("#loadings").show();
+  // $("#loadings").show();
 
 
     // await contractCall('buyGame', [], prices)
@@ -221,6 +221,12 @@ $('#BuyButton').click(async function(){
     console.log("Price of product",productListArrPrice)
     const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
     console.log("Purchase:", purchased_game)
+    // sold = purchased_game.purchased 
+    // GameArray.push({
+    //   purchased : p
+      
+
+    // })
   
   // const foundIndex = productListArr.findIndex(product => product.id === dataIndex)
   // const value = $(".buyBtn")[foundIndex] ;
@@ -230,7 +236,9 @@ $('#BuyButton').click(async function(){
     console.log("--------------------------")
   
     console.log("Just Clicked The Buy Button")
+
+
     event.preventDefault();
     renderProduct();
-    $("#loadings").hide();
+    // $("#loadings").hide();
 });
