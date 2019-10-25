@@ -142,7 +142,7 @@ window.addEventListener('load', async () => {
 
     GameArray.push({
         id : i,
-        imageUrl : games.images,s
+        imageUrl : games.images,
         name : games.name, 
         price : games.price,
         purchased : games.purchased
