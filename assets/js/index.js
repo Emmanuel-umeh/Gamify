@@ -189,11 +189,11 @@ $('#regButton').click(async function(){
     $("#loadings").hide();
 });
 
-$('#buyButton').click(async function(){
+$('.btn-2').click(async function(){
   $("#loadings").show();
     console.log("Button has been clicked")
 
-    // await contractCall('buyGame', [], prices)
+    // await contractCall('buyGame', [], prices)s
    
     const dataIndex = event.target.id
     const gamePrice = GameArray[dataIndex].price
