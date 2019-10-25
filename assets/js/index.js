@@ -190,7 +190,7 @@ $('#regButton').click(async function(){
 });
 
 $('.button').click(async function(){
-  // $("#loadings").show();
+  $("#loadings").show();
 
 
     // await contractCall('buyGame', [], prices)
@@ -217,8 +217,10 @@ $('.button').click(async function(){
   
     console.log("Just Clicked The Buy Button")
 
+    location.
+
 
     event.preventDefault();
     renderProduct();
-    // $("#loadings").hide();
+    $("#loadings").hide();
 });
