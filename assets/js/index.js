@@ -83,7 +83,7 @@ var GameArray = [];
 var client = null;
 var gameLength = 0;
 
-function createAlert(e, severity, dismissible, autoDismiss, appendToId) {
+function createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId) {
   var iconMap = {
     info: "fa fa-info-circle",
     success: "fa fa-thumbs-up",
@@ -108,9 +108,9 @@ function createAlert(e, severity, dismissible, autoDismiss, appendToId) {
     "class": alertClasses.join(" ") // you need to quote "class" since it's a reserved keyword
   });
 
-  if (e) {
+  if (title) {
     var msgTitle = $("<h4 />", {
-      html: error
+      html: title
     }).appendTo(msg);
     
     if(!iconAdded){
@@ -119,7 +119,27 @@ function createAlert(e, severity, dismissible, autoDismiss, appendToId) {
     }
   }
 
-  
+  if (summary) {
+    var msgSummary = $("<strong />", {
+      html: summary
+    }).appendTo(msg);
+    
+    if(!iconAdded){
+      msgSummary.prepend(msgIcon);
+      iconAdded = true;
+    }
+  }
+
+  if (details) {
+    var msgDetails = $("<p />", {
+      html: details
+    }).appendTo(msg);
+    
+    if(!iconAdded){
+      msgDetails.prepend(msgIcon);
+      iconAdded = true;
+    }
+  }
   
 
   if (dismissible) {
@@ -145,6 +165,7 @@ function createAlert(e, severity, dismissible, autoDismiss, appendToId) {
 
 
 
+
 function renderProduct()
 {
     GameArray = GameArray.sort(function(a,b){return b.Price - a.Price})
@@ -165,7 +186,7 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to get data of smart contract func, with specefied arguments
   console.log("Contract : ", contract)
-  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert(e, "Serious", dismissible, autoDismiss, appendToId));
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert('','',e,'warning',false,true,'pageMessages'));
   //Make another call to decode the data received in first call
   console.log("Called get found: ",  calledGet)
   const decodedGet = await calledGet.decode().catch(e => window.alert(e));
@@ -176,7 +197,7 @@ async function callStatic(func, args) {
 async function contractCall(func, args, value) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract.call(func, args, {amount:value}).catch(e => createAlert(e, severity, dismissible, autoDismiss, appendToId));
+  const calledSet = await contract.call(func, args, {amount:value}).catch(e => createAlert('','',e,'warning',false,true,'pageMessages'));
 
   return calledSet;
 }
