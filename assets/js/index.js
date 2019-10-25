@@ -83,7 +83,7 @@ var GameArray = [];
 var client = null;
 var gameLength = 0;
 
-function createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId) {
+function createAlert(e, severity, dismissible, autoDismiss, appendToId) {
   var iconMap = {
     info: "fa fa-info-circle",
     success: "fa fa-thumbs-up",
@@ -108,9 +108,9 @@ function createAlert(title, summary, details, severity, dismissible, autoDismiss
     "class": alertClasses.join(" ") // you need to quote "class" since it's a reserved keyword
   });
 
-  if (title) {
+  if (e) {
     var msgTitle = $("<h4 />", {
-      html: title
+      html: error
     }).appendTo(msg);
     
     if(!iconAdded){
@@ -119,27 +119,7 @@ function createAlert(title, summary, details, severity, dismissible, autoDismiss
     }
   }
 
-  if (summary) {
-    var msgSummary = $("<strong />", {
-      html: summary
-    }).appendTo(msg);
-    
-    if(!iconAdded){
-      msgSummary.prepend(msgIcon);
-      iconAdded = true;
-    }
-  }
-
-  if (details) {
-    var msgDetails = $("<p />", {
-      html: details
-    }).appendTo(msg);
-    
-    if(!iconAdded){
-      msgDetails.prepend(msgIcon);
-      iconAdded = true;
-    }
-  }
+  
   
 
   if (dismissible) {
@@ -185,7 +165,7 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to get data of smart contract func, with specefied arguments
   console.log("Contract : ", contract)
-  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId));
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert(e, severity, dismissible, autoDismiss, appendToId));
   //Make another call to decode the data received in first call
   console.log("Called get found: ",  calledGet)
   const decodedGet = await calledGet.decode().catch(e => window.alert(e));
