@@ -176,7 +176,7 @@ async function callStatic(func, args) {
 async function contractCall(func, args, value) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract.call(func, args, {amount:value}).catch(e => createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId));
+  const calledSet = await contract.call(func, args, {amount:value}).catch(e => createAlert(e, severity, dismissible, autoDismiss, appendToId));
 
   return calledSet;
 }
@@ -226,7 +226,7 @@ $('#regButton').click(async function(){
 
     description = ($('#description').val());
     prices = parseInt(price,10)
-    await contractCall('addGame', [name,prices,url,description], prices)
+    await contractCall('addGame', [name,prices,url,description], prices).catch(error)
    
     console.log(url)
     console.log(name)
