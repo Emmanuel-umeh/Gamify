@@ -198,7 +198,7 @@ $("#body").click(".btn-2", async function(event){
     const dataIndex = event.target.id
     const gamePrice = GameArray[dataIndex].price
     const gameid =  GameArray[dataIndex].id
-    console.log("Price of product",famePrice)
+    console.log("Price of product",gamePrice)
     const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
     console.log("Purchase:", purchased_game)
     // sold = purchased_game.purchased 
