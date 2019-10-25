@@ -130,7 +130,7 @@ window.addEventListener('load', async () => {
 
   gameLength = await callStatic('getGameLength', []); 
 
-  for(let i = 1; i< gameLength ; i++ ){
+  for(let i = 1; i<= gameLength ; i++ ){
     const games =  await callStatic('get_game_by_index', [i]);
     
     console.log("for loop reached", "pushing to array")
@@ -141,8 +141,8 @@ window.addEventListener('load', async () => {
    
 
     GameArray.push({
-        id : games.id,
-        imageUrl : games.images,
+        id : i,
+        imageUrl : games.images,s
         name : games.name, 
         price : games.price,
         purchased : games.purchased
