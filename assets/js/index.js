@@ -165,7 +165,7 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to get data of smart contract func, with specefied arguments
   console.log("Contract : ", contract)
-  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert(e, severity, dismissible, autoDismiss, appendToId));
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert(e, "Serious", dismissible, autoDismiss, appendToId));
   //Make another call to decode the data received in first call
   console.log("Called get found: ",  calledGet)
   const decodedGet = await calledGet.decode().catch(e => window.alert(e));
