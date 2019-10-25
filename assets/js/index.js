@@ -198,7 +198,7 @@ $("#body").click(".btn-2", async function(event){
     const dataIndex = event.target.id
     const gamePrice = GameArray[dataIndex].price
     const gameid =  GameArray[dataIndex].id
-    console.log("Price of product",GameArray.price)
+    console.log("Price of product",famePrice)
     const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
     console.log("Purchase:", purchased_game)
     // sold = purchased_game.purchased 
@@ -217,10 +217,12 @@ $("#body").click(".btn-2", async function(event){
   
     console.log("Just Clicked The Buy Button")
 
-    location.
+    alert("You Have Bought This Product Successfully")
+
+    
 
 
-    event.preventDefault();
+    
     renderProduct();
     $("#loadings").hide();
 });
