@@ -1,18 +1,14 @@
-.loader{
-    margin: 0 0 2em;
-    height: 100px;
-    width: 20%;
-    text-align: center;
-    padding: 1em;
-    margin: 0 auto 1em;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
-  /*
-    Set the color of the icon
-  */
-  svg path,
-  svg rect{
-    fill: #FF6700;
-  }
+#loadings {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #ffffffcf;
+}
+#loadings img{
+    position: center;
+    left: 40%;
+    top: 40%;
+}
