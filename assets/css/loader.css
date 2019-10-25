@@ -1,13 +1,13 @@
-#loadings {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background-color: #ffffffcf;
-}
-#loadings img{
-    position: center;
-    
-}
+
+@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
+
+*,html{margin:0;padding:0}
+
+
+svg{
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    display:inline-block;
+  }
+  
