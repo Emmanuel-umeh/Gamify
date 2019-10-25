@@ -105,10 +105,10 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to get data of smart contract func, with specefied arguments
   console.log("Contract : ", contract)
-  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => console.error(e));
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => window.alert(e));
   //Make another call to decode the data received in first call
   console.log("Called get found: ",  calledGet)
-  const decodedGet = await calledGet.decode().catch(e => console.error(e));
+  const decodedGet = await calledGet.decode().catch(e => window.alert(e));
   console.log("catching errors : ", decodedGet)
   return decodedGet;
 }
@@ -116,7 +116,7 @@ async function callStatic(func, args) {
 async function contractCall(func, args, value) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract.call(func, args, {amount:value}).catch(e => console.error(e));
+  const calledSet = await contract.call(func, args, {amount:value}).catch(e => window.alert(e));
 
   return calledSet;
 }
@@ -217,7 +217,7 @@ $("#body").click(".btn-2", async function(event){
   
     console.log("Just Clicked The Buy Button")
 
-    alert("You Have Bought This Product Successfully")
+    window.alert("You Have Bought This Product Successfully")
 
     
 
