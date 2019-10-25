@@ -280,8 +280,8 @@ $("#body").click(".btn-2", async function(event){
     const gamePrice = GameArray[dataIndex].price
     const gameid =  GameArray[dataIndex].id
     console.log("Price of product",gamePrice)
-    const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
-    console.log("Purchase:", purchased_game)
+    const error = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10)).catch(e => createAlert('','',e,'warning',false,true,'pageMessages'));
+    return error
     // sold = purchased_game.purchased 
     // GameArray.push({
     //   purchased : p
