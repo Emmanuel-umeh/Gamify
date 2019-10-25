@@ -136,15 +136,30 @@ window.addEventListener('load', async () => {
     console.log(games.name)
     console.log(games.price)
 
-    $(function(){
-      $(document).on('click', '#buyButton', function(e) {
-        $(this).html('<i class="fa fa-heart" aria-hidden="true"></i> You bought this');
-        $(this).children('.fa-heart').addClass('animate-like');
-  
-        
+    $(document).ready(function() {
+      var canDownload = true;
+      $('.buy').on('click', function() {
+        if(canDownload === true) {
+          $(this).addClass('loading').find('span, small').hide();
+          setTimeout(function() {
+            $('.loading').addClass('processing');
+            canDownload = false;
+            setTimeout(function() {
+              $('.buy').removeClass('processing');
+              setTimeout(function() {
+                $('.buy').removeClass('loading').addClass('success').find('.fa-check').fadeIn(100);
+                setTimeout(function() {
+                  $('.download').addClass('active').children().fadeIn(100, function() {
+                    $('meta[name="theme-color"]').attr('content','#21d49a');
+                    $('.buy').css('background-color','#21d49a');
+                  });
+                }, 1000);
+              }, 400);
+            }, 2800);
+          }, 300);
+        }
       });
-  });
-    
+    });
 
     GameArray.push({
         imageUrl : games.images,
