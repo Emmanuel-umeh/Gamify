@@ -83,85 +83,6 @@ var GameArray = [];
 var client = null;
 var gameLength = 0;
 
-function createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId) {
-  var iconMap = {
-    info: "fa fa-info-circle",
-    success: "fa fa-thumbs-up",
-    warning: "fa fa-exclamation-triangle",
-    danger: "fa ffa fa-exclamation-circle"
-  };
-
-  var iconAdded = false;
-
-  var alertClasses = ["alert", "animated", "flipInX"];
-  alertClasses.push("alert-" + severity.toLowerCase());
-
-  if (dismissible) {
-    alertClasses.push("alert-dismissible");
-  }
-
-  var msgIcon = $("<i />", {
-    "class": iconMap[severity] // you need to quote "class" since it's a reserved keyword
-  });
-
-  var msg = $("<div />", {
-    "class": alertClasses.join(" ") // you need to quote "class" since it's a reserved keyword
-  });
-
-  if (title) {
-    var msgTitle = $("<h4 />", {
-      html: title
-    }).appendTo(msg);
-    
-    if(!iconAdded){
-      msgTitle.prepend(msgIcon);
-      iconAdded = true;
-    }
-  }
-
-  if (summary) {
-    var msgSummary = $("<strong />", {
-      html: summary
-    }).appendTo(msg);
-    
-    if(!iconAdded){
-      msgSummary.prepend(msgIcon);
-      iconAdded = true;
-    }
-  }
-
-  if (details) {
-    var msgDetails = $("<p />", {
-      html: details
-    }).appendTo(msg);
-    
-    if(!iconAdded){
-      msgDetails.prepend(msgIcon);
-      iconAdded = true;
-    }
-  }
-  
-
-  if (dismissible) {
-    var msgClose = $("<span />", {
-      "class": "close", // you need to quote "class" since it's a reserved keyword
-      "data-dismiss": "alert",
-      html: "<i class='fa fa-times-circle'></i>"
-    }).appendTo(msg);
-  }
-  
-  $('#' + appendToId).prepend(msg);
-  
-  if(autoDismiss){
-    setTimeout(function(){
-      msg.addClass("flipOutX");
-      setTimeout(function(){
-        msg.remove();
-      },1000);
-    }, 5000);
-  }
-}
-
 
 
 
@@ -186,10 +107,10 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to get data of smart contract func, with specefied arguments
   console.log("Contract : ", contract)
-  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => createAlert('','',e,'warning',false,true,'pageMessages'));
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e => console.error(e));
   //Make another call to decode the data received in first call
   console.log("Called get found: ",  calledGet)
-  const decodedGet = await calledGet.decode().catch(e => window.alert(e));
+  const decodedGet = await calledGet.decode().catch(e => console.error(e));
   console.log("catching errors : ", decodedGet)
   return decodedGet;
 }
@@ -197,7 +118,7 @@ async function callStatic(func, args) {
 async function contractCall(func, args, value) {
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract.call(func, args, {amount:value}).catch(e => createAlert('','',e,'warning',false,true,'pageMessages'));
+  const calledSet = await contract.call(func, args, {amount:value}).catch(e => console.error(e));
 
   return calledSet;
 }
@@ -280,11 +201,15 @@ $("#body").click(".btn-2", async function(event){
     const gamePrice = GameArray[dataIndex].price
     const gameid =  GameArray[dataIndex].id
     console.log("Price of product",gamePrice)
-    await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10)).catch((e) =>{
-      const message = createAlert('','',e,'warning',false,true,'pageMessages');
-      const messageId = document.getElementById("message");
-      messageId.innerHTML = message
-    });
+
+    
+    if(GameArray[dataIndex].purchased = false){
+     await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10))
+    }else{
+      const messageId = document.getElementById('message')
+      messageId.innerHTML = "Already Purchased"
+
+    }
   // sold = purchased_game.purchased 
     // GameArray.push({
     //   purchased : p
