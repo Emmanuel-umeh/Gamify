@@ -185,3 +185,28 @@ $('#regButton').click(async function(){
     renderProduct();
     $("#loadings").hide();
 });
+
+$('#BuyButton').click(async function(){
+  $("#loadings").show();
+
+
+    // await contractCall('buyGame', [], prices)
+   
+    const dataIndex = event.target.id
+    const gamePrice = productListArr[dataIndex].price
+    console.log("Price of product",productListArrPrice)
+    const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
+    console.log("Purchase:", purchased_game)
+  
+  // const foundIndex = productListArr.findIndex(product => product.id === dataIndex)
+  // const value = $(".buyBtn")[foundIndex] ;
+
+    console.log("-----------------")
+    console.log("Data Index:", dataIndex)
+    console.log("--------------------------")
+  
+    console.log("Just Clicked The Buy Button")
+    event.preventDefault();
+    renderProduct();
+    $("#loadings").hide();
+});
