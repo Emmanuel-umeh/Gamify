@@ -178,7 +178,7 @@ $('#regButton').click(async function(){
 
     
     GameArray.push({
-        id : GameArray.length + 1,
+        id : GameArray.id + 1,
         name : name,
         url : url,
         price : prices,
