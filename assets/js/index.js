@@ -199,6 +199,7 @@ $("#body").click(".btn-2", async function(event){
    
     const dataIndex = event.target.id
     const gamePrice = GameArray[dataIndex].price
+    console.log(gamePrice)
     const gameid =  GameArray[dataIndex].id - 1
     console.log("Price of product",gamePrice)
 
