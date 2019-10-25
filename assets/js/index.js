@@ -189,7 +189,7 @@ $('#regButton').click(async function(){
     $("#loadings").hide();
 });
 
-$("#body").click(".buyButton", async function(event){
+$("#body").click(".btn-2", async function(event){
   $("#loadings").show();
     console.log("Button has been clicked")
 
