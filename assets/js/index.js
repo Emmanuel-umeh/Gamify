@@ -187,15 +187,15 @@ $('#regButton').click(async function(){
     $("#loadings").hide();
 });
 
-$('#BuyButton').click(async function(){
+$('.button').click(async function(){
   // $("#loadings").show();
 
 
     // await contractCall('buyGame', [], prices)
    
     const dataIndex = event.target.id
-    const gamePrice = productListArr[dataIndex].price
-    console.log("Price of product",productListArrPrice)
+    const gamePrice = GameArray[dataIndex].price
+    console.log("Price of product",GameArray.price)
     const purchased_game = await contractCall('buyGame', [dataIndex],parseInt(gamePrice, 10));
     console.log("Purchase:", purchased_game)
     // sold = purchased_game.purchased 
