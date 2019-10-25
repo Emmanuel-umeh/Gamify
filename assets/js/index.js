@@ -298,7 +298,7 @@ $("#body").click(".btn-2", async function(event){
   
     console.log("Just Clicked The Buy Button")
 
-    window.alert("You Have Bought This Product Successfully")
+    
 
     
 
