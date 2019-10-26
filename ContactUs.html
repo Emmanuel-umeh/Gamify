@@ -32,15 +32,15 @@
                 <div class="heading">
                     <h2>Contact Us</h2>
                 </div>
-                <form>
+                <form action="https://formspree.io/mknwbkzw" method="POST">
                     <div class="form-group"><label for="subject">Subject</label><select class="form-control" id="subject"><option value="" selected="">Choose Subject</option><option value="1">Complaint</option><option value="2">Observation</option><option value="3">Praise</option></select></div>
                     <div
-                        class="form-group"><label for="email">Email</label><input class="form-control" type="email" id="email"></div>
-            <div class="form-group"><label for="message">Message</label><textarea class="form-control" id="message"></textarea></div>
+                        class="form-group"><label for="email" name = "title">Title</label><input class="form-control" type="email" id="email"></div>
+            <div class="form-group"><label for="message" name = "message">Message</label><textarea class="form-control" id="message"></textarea></div>
             <div class="form-group">
                 <div class="form-row">
-                    <div class="col-md-6"><label for="hire-date">Date</label><input class="form-control" type="date" id="hire-date"></div>
-                    <div class="col-md-6 button"><button class="btn btn-primary btn-block" type="submit">Contact Us</button></div>
+                    <div class="col-md-6"><label for="hire-date" name = "date">Date</label><input class="form-control" type="date" id="hire-date"></div>
+                    <div class="col-md-6 button"><button class="btn btn-primary btn-block" type="submit" value ="Send" >Contact Us</button></div>
                 </div>
             </div>
             </form>
