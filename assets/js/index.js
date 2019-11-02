@@ -1,5 +1,5 @@
 const contractSource = `
-contract Gamify =
+
   payable contract Gamify =
 
     record game = {
