@@ -5,7 +5,7 @@ contract Gamify =
     id:int,
     name: string,
     price:int,
-    purchased:bool,
+    purchased:int,
     description : string,
     images:string,
     owner:address
@@ -28,7 +28,7 @@ contract Gamify =
     state.gameLength
   
   stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
-    let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=false, owner=Call.caller}
+    let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=0, owner=Call.caller}
     let index = getGameLength() + 1
     put(state{games[index] = game, gameLength  = index})
 
@@ -48,9 +48,8 @@ contract Gamify =
     // require that there is enough AE in the transaction
     require(Call.value >= game.price,abort("You Don't Have Enough AE"))
     
-    // require that the game has not been purchased
-    
-    require(!game.purchased,abort("GAME ALREADY PURCHASED"))
+  
+
     
     // require that the buyer is not the seller
     
@@ -60,12 +59,12 @@ contract Gamify =
     
     //game.owner = Call.caller
     
-    // mark as  purchased
     
-    //game.purchased = true 
+    
+   
     
     // update the game
-    let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = true, owner=Call.caller}
+    let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = game.purchased + 1, owner=Call.caller}
     
     put(state{games[_id] = updated_game})
     
@@ -78,7 +77,7 @@ contract Gamify =
 
 
 
-const contractAddress = 'ct_oBWZxezUbHRWBBeLKB2LR59ms8rLu2NGhX7mCDWqA94SW8DE1';
+const contractAddress = 'ak_2ASc6FC1hoHB5Y5BM5STzfeuK2B7BJZQq2jPthSVR4hRcQC9vJ';
 var GameArray = [];
 var SoldArray = []
 var client = null;
@@ -147,16 +146,6 @@ window.addEventListener('load', async () => {
   for (let i = 1; i <= gameLength; i++) {
     const games = await callStatic('get_game_by_index', [i]);
 
-    if (games.purchase) {
-      SoldArray({
-        id: i,
-        imageUrl: games.images,
-        name: games.name,
-        price: games.price,
-        purchased: games.purchased
-      })
-
-    } else {
       console.log("for loop reached", "pushing to array")
       console.log(games.images)
       console.log(games.name)
@@ -165,7 +154,7 @@ window.addEventListener('load', async () => {
 
 
       GameArray.push({
-        id: i,
+        id: games.id,
         imageUrl: games.images,
         name: games.name,
         price: games.price,
@@ -176,8 +165,7 @@ window.addEventListener('load', async () => {
 
     renderProduct();
     $("#loadings").hide();
-  }
-});
+  });
 
 
 
@@ -228,24 +216,16 @@ $("#body").click(".btn", async function (event) {
   console.log("Price of product", gamePrice)
 
 
-  if (GameArray[dataIndex].purchased = false) {
+  
     await contractCall('buyGame', [dataIndex], parseInt(gamePrice, 10))
-    const game = await contractCall('get_game_by_index', [dataIndex])
+    
 
-    SoldArray.push({
-      soldurl: game.images,
-      soldName: game.name,
-      soldPrice: game.price,
-      soldDescription: game.description,
-      newOwner: game.owner
-
-    })
-
-  } else {
+ 
     const messageId = document.getElementById(`${gameid}`)
     console.log(messageId)
 
-    messageId.innerHTML = "Already Purchased";
+    messageId.innerHTML = "Purchased";
+    location.reload(true)
 
 
   }
@@ -259,11 +239,7 @@ $("#body").click(".btn", async function (event) {
   // const foundIndex = productListArr.findIndex(product => product.id === dataIndex)
   // const value = $(".buyBtn")[foundIndex] ;
 
-  console.log("-----------------")
-  console.log("Data Index:", dataIndex)
-  console.log("--------------------------")
 
-  console.log("Just Clicked The Buy Button")
 
 
 

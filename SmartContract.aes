@@ -4,7 +4,7 @@ contract Gamify =
     id:int,
     name: string,
     price:int,
-    purchased:bool,
+    purchased:int,
     description : string,
     images:string,
     owner:address
@@ -27,7 +27,7 @@ contract Gamify =
     state.gameLength
   
   stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
-    let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=false, owner=Call.caller}
+    let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=0, owner=Call.caller}
     let index = getGameLength() + 1
     put(state{games[index] = game, gameLength  = index})
 
@@ -47,9 +47,8 @@ contract Gamify =
     // require that there is enough AE in the transaction
     require(Call.value >= game.price,abort("You Don't Have Enough AE"))
     
-    // require that the game has not been purchased
-    
-    require(!game.purchased,abort("GAME ALREADY PURCHASED"))
+  
+
     
     // require that the buyer is not the seller
     
@@ -59,12 +58,12 @@ contract Gamify =
     
     //game.owner = Call.caller
     
-    // mark as  purchased
     
-    //game.purchased = true 
+    
+   
     
     // update the game
-    let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = true, owner=Call.caller}
+    let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = game.purchased + 1, owner=Call.caller}
     
     put(state{games[_id] = updated_game})
     
