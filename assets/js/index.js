@@ -209,15 +209,13 @@ $("#body").click(".btn", async function (event) {
 
   // await contractCall('buyGame', [], prices)s
 
-  const dataIndex = event.target.id
-  const gamePrice = GameArray[dataIndex].price
-  console.log(gamePrice)
-  const gameid = GameArray[dataIndex].id
-  console.log("Price of product", gamePrice)
+   dataIndex = GameArray.length
+   game = await callStatic('get_game_by_index', dataIndex)
+ 
 
 
   
-    await contractCall('buyGame', [dataIndex], parseInt(gamePrice, 10))
+    await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
     
 
  
