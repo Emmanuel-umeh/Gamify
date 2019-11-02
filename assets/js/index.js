@@ -190,7 +190,7 @@ $('#regButton').click(async function () {
 
 
   GameArray.push({
-    id: GameArray.id + 1,
+    id: id,
     name: name,
     url: url,
     price: prices,
@@ -221,11 +221,12 @@ $("#body").click(".btn", async function (event) {
     
 
  
-    const messageId = document.getElementById(`${gameid}`)
+    
+    location.reload(true)
+    var messageId = document.getElementById(`${gameid}`)
     console.log(messageId)
 
     messageId.innerHTML = "Purchased";
-    location.reload(true)
 
 
   
