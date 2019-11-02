@@ -210,7 +210,7 @@ $("#body").click(".btn", async function (event) {
   // await contractCall('buyGame', [], prices)s
 
    dataIndex = GameArray.length
-   game = await callStatic('get_game_by_index', dataIndex)
+   game = await callStatic('get_game_by_index', [dataIndex])
  
 
 
