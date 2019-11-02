@@ -77,7 +77,7 @@ contract Gamify =
 
 
 
-const contractAddress = 'ct_2PQkoE62j7yQiU2P7GFEpaJyWqTipYAYQ8eoS962LeXhZgKTYV';
+const contractAddress = 'ct_2Rv2JS5yhQpAM5gewogdEMXWG1cKCFuWcXoAjThvjzMEyWY2ue';
 var GameArray = [];
 var SoldArray = []
 var client = null;
