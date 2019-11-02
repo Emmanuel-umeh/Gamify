@@ -228,7 +228,7 @@ $("#body").click(".btn", async function (event) {
     location.reload(true)
 
 
-  }
+  
   // sold = purchased_game.purchased 
   // GameArray.push({
   //   purchased : p
