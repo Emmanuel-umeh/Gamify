@@ -77,7 +77,7 @@ contract Gamify =
 
 
 
-const contractAddress = 'ct_AFYWm3BFqK56sWCritK23ftPf5TesJqbbprNG93QtZYkX91aP';
+const contractAddress = 'ct_2sQpk2bSUpFYcVbmogMwdb8poLTxJqHVnKsWmvTd3jV3sVeyi2';
 var GameArray = [];
 var SoldArray = []
 var client = null;
@@ -182,6 +182,7 @@ $('#regButton').click(async function () {
   prices = parseInt(price, 10)
   await contractCall('addGame', [name, prices, url, description], prices)
 
+
   console.log(url)
   console.log(name)
   console.log(prices)
@@ -190,7 +191,7 @@ $('#regButton').click(async function () {
 
 
   GameArray.push({
-    id: id,
+    id: GameArray.length + 1,
     name: name,
     url: url,
     price: prices,
