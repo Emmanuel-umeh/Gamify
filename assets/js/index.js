@@ -1,5 +1,6 @@
 const contractSource = `
 contract Gamify =
+payable contract Gamify =
 
   record game = {
     id:int,
@@ -27,7 +28,7 @@ contract Gamify =
   entrypoint getGameLength() : int = 
     state.gameLength
   
-  stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
+  payable stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
     let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=0, owner=Call.caller}
     let index = getGameLength() + 1
     put(state{games[index] = game, gameLength  = index})
@@ -71,7 +72,6 @@ contract Gamify =
     // sends the amount
     
     Chain.spend(_seller, Call.value)
- 
     `;
 
 
