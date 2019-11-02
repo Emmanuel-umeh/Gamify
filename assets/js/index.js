@@ -200,6 +200,7 @@ $('#regButton').click(async function () {
 
 
   })
+  location.reload((true))
   renderProduct();
   $("#loadings").hide();
 });
