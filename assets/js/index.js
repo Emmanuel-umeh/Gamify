@@ -196,6 +196,8 @@ $("#body").click(".btn", async function (event) {
 
   
     await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
+
+    document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
     
 
  
