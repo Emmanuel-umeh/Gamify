@@ -1,83 +1,75 @@
 const contractSource = `
+payable contract Gamify =
 
-  payable contract Gamify =
+  record game = {
+    id:int,
+    name: string,
+    price:int,
+    purchased:int,
+    description : string,
+    images:string,
+    owner:address
+    
+    }
+  
+  
+  record state = 
+    {
+      gameLength : int,
+      games : map(int, game)
+    }
+  
+  entrypoint init() = 
+    { games = {}, 
+      gameLength = 0}
+  
+    
+  entrypoint getGameLength() : int = 
+    state.gameLength
+  
+  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string ) =
+    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller}
+    let index = getGameLength() + 1
+    put(state{games[index] = game, gameLength  = index})
 
-    record game = {
-      id:int,
-      name: string,
-      price:int,
-      purchased:int,
-      description : string,
-      images:string,
-      owner:address
-      
-      }
+  
+  entrypoint getGame(index:int) : game = 
+    switch(Map.lookup(index, state.games))
+      None => abort("Game does not exist with this index")
+      Some(x) => x  
+  
+  payable stateful entrypoint buyGame(_id:int)=
+    let game = getGame(_id)
     
+    let  owner  = game.owner : address
     
-    record state = 
-      {
-        gameLength : int,
-        games : map(int, game)
-      }
-    
-    entrypoint init() = 
-      { games = {}, 
-        gameLength = 0}
-    
-      
-    entrypoint getGameLength() : int = 
-      state.gameLength
-    
-    payable stateful entrypoint addGame(_name:string, _price:int, _images:string, _description : string ) =
-      let game = {id=getGameLength() + 1, name=_name, price=_price, description = _description, images=_images,purchased=0, owner=Call.caller}
-      let index = getGameLength() + 1
-      put(state{games[index] = game, gameLength  = index})
-
-    
-    entrypoint get_game_by_index(index:int) : game = 
-      switch(Map.lookup(index, state.games))
-        None => abort("Game does not exist with this index")
-        Some(x) => x  
-    
-    payable stateful entrypoint buyGame(_id:int)=
-      let game = get_game_by_index(_id) // get the current game with the id
-      
-      let  _seller  = game.owner : address
-      
-      require(game.id > 0,abort("NOT A GAME ID"))
-      
-      // require that there is enough AE in the transaction
-      require(Call.value >= game.price,abort("You Don't Have Enough AE"))
-      
+    require(game.id > 0,abort("NOT A GAME "))
     
 
-      
-      // require that the buyer is not the seller
-      
-      require(_seller != Call.caller,"SELLER CAN'T PURCHASE HIS ITEM")
-      
-      // transfer ownership
-      
-      //game.owner = Call.caller
-      
-      
-      
+    require(Call.value >= game.price,abort("You Don't Have Enough AE"))
+
     
-      
-      // update the game
-      let updated_game = {id=game.id, name=game.name, price=game.price, images=game.images, description = game.description, purchased = game.purchased + 1, owner=Call.caller}
-      
-      put(state{games[_id] = updated_game})
-      
-      // sends the amount
-      
-      Chain.spend(_seller, Call.value)
+
+
+    let updated_game = {
+      id=game.id,
+      name=game.name,
+      price=game.price,
+      images=game.images,
+      description = game.description,
+      purchased = game.purchased + 1, 
+      owner=Call.caller}
+    
+    put(state{games[_id] = updated_game})
+    
+    
+    Chain.spend(owner, Call.value)
     `;
 
 
 
 
-const contractAddress = 'ct_2sQpk2bSUpFYcVbmogMwdb8poLTxJqHVnKsWmvTd3jV3sVeyi2';
+const contractAddress = 'ct_ADYm1W3pL1tDSaf5ZkEBSPT3Qq9RKXxBdHdNSasn8trvHKaFT';
 var GameArray = [];
 var SoldArray = []
 var client = null;
@@ -104,21 +96,19 @@ function renderProduct() {
   $('#body').html(rendered);
   console.log("for loop reached")
 }
-//Create a asynchronous read call for our smart contract
+
 async function callStatic(func, args) {
-  //Create a new contract instance that we can interact with
+
   const contract = await client.getContractInstance(contractSource, {
     contractAddress
   });
-  //Make a call to get data of smart contract func, with specefied arguments
-  console.log("Contract : ", contract)
+ 
   const calledGet = await contract.call(func, args, {
     callStatic: true
   }).catch(e => console.error(e));
-  //Make another call to decode the data received in first call
-  console.log("Called get found: ", calledGet)
+  
   const decodedGet = await calledGet.decode().catch(e => console.error(e));
-  console.log("catching errors : ", decodedGet)
+ 
   return decodedGet;
 }
 
@@ -145,13 +135,6 @@ window.addEventListener('load', async () => {
 
   for (let i = 1; i <= gameLength; i++) {
     const games = await callStatic('get_game_by_index', [i]);
-
-      console.log("for loop reached", "pushing to array")
-      console.log(games.images)
-      console.log(games.name)
-      console.log(games.price)
-
-
 
       GameArray.push({
         id: games.id,
@@ -181,12 +164,8 @@ $('#regButton').click(async function () {
   description = ($('#description').val());
   prices = parseInt(price, 10)
   await contractCall('addGame', [name, prices, url, description], prices)
+  console.log("registering")
 
-
-  console.log(url)
-  console.log(name)
-  console.log(prices)
-  console.log(typeof (prices))
 
 
 
@@ -207,12 +186,11 @@ $('#regButton').click(async function () {
 
 $("#body").click(".btn", async function (event) {
   $("#loadings").show();
-  console.log("Button has been clicked")
+  console.log("Purchasing")
 
-  // await contractCall('buyGame', [], prices)s
 
-   dataIndex = GameArray.length
-   game = await callStatic('get_game_by_index', [dataIndex])
+   dataIndex = event.target.id
+   game = await callStatic('getGame', [dataIndex])
  
 
 
@@ -227,23 +205,6 @@ $("#body").click(".btn", async function (event) {
     console.log(messageId)
 
     messageId.innerHTML = "Purchased";
-
-
-  
-  // sold = purchased_game.purchased 
-  // GameArray.push({
-  //   purchased : p
-
-
-  // })
-
-  // const foundIndex = productListArr.findIndex(product => product.id === dataIndex)
-  // const value = $(".buyBtn")[foundIndex] ;
-
-
-
-
-
 
 
 
