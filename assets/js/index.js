@@ -201,11 +201,7 @@ $("#body").click(".btn", async function (event) {
  
     
     location.reload(true)
-    var messageId = document.getElementById(`${id}`)
-    console.log(messageId)
-
-    messageId.innerHTML = "Purchased";
-
+    
 
 
 
