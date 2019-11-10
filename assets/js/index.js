@@ -141,7 +141,8 @@ window.addEventListener('load', async () => {
         imageUrl: games.images,
         name: games.name,
         price: games.price,
-        purchased: games.purchased
+        purchased: games.purchased,
+        description : games.description
 
       })
     }
