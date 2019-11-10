@@ -94,7 +94,7 @@ function renderProduct() {
 
 
   $('#body').html(rendered);
-  console.log("for loop reached")
+  console.log("Rendered")
 }
 
 async function callStatic(func, args) {
@@ -197,7 +197,7 @@ $("#body").click(".btn", async function (event) {
   
     await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
-    document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
+    // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
     
 
  
