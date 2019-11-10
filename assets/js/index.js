@@ -163,7 +163,7 @@ $('#regButton').click(async function () {
 
   description = ($('#description').val());
   prices = parseInt(price, 10)
-  await contractCall('addGame', [name, prices, url, description], 0)
+  await contractCall('addGame', [name, prices, url, description], 1000)
   console.log("registering")
 
 
