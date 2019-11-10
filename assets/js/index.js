@@ -134,7 +134,7 @@ window.addEventListener('load', async () => {
 
 
   for (let i = 1; i <= gameLength; i++) {
-    const games = await callStatic('get_game_by_index', [i]);
+    const games = await callStatic('getGame', [i]);
 
       GameArray.push({
         id: games.id,
