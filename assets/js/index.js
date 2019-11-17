@@ -71,7 +71,7 @@ payable contract Gamify =
 
 
 
-const contractAddress = 'ct_rsiFtDyMSRZ5bEbiJet9HTs9yxQqN5a7wQMeNQXTM1UuvFaQe';
+const contractAddress = 'ct_CrEiHBxBz941f9Na7ppbgTWLiz1LLX5TYJEwVwpuqcvkYgHkf';
 var GameArray = [];
 var client = null;
 var gameLength = 0;
