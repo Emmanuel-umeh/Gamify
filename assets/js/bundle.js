@@ -2264,6 +2264,7 @@
         image = ($('#image').val());
 
         const file = document.querySelector('#file')
+        console.log(file)
 
 
         const files = await uploadFile(file)
