@@ -182,7 +182,7 @@ window.addEventListener('load', async () => {
 
 
 
-const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
+// const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 
   async function uploadFile(file) {
@@ -205,14 +205,11 @@ const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https'
     const files = await uploadFile(file)
     const multihash = files[0].hash
 
-    document.getElementById('#link').innerHTML =  multihash
   
     console.log(multihash)
   }
   
-  const file = document.querySelector('#file')
   
-  file.addEventListener('change', onImageChange)
 // Register Game
 $('#regButton').click(async function () {
   $("#loadings").show();
@@ -227,20 +224,23 @@ $('#regButton').click(async function () {
 
   image = ($('#image').val());
 
-  hash = document.getElementById('#link').innerHTML
+  const file = document.querySelector('#file')
   
+  newfile = file.addEventListener('change', onImageChange)
+
+  console.log(newfile.multihash)
+
 
 
         prices = parseInt(price, 10)
-        reggame = await contractCall('addGame', [name, prices, image, description, hash], 1000)
-        console.log(multihash)
+        reggame = await contractCall('addGame', [name, prices, image, description, newfile.multihash], 1000)
+        console.log(newfile.multihash)
 
         GameArray.push({
           id: GameArray.length + 1,
           name: name,
           url: url,
-          price: prices,
-          hash: reggame.multihash
+          price: prices
 
 
 

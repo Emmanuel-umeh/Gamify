@@ -2043,293 +2043,294 @@
     
     },{}],4:[function(require,module,exports){
     (function (Buffer){
-        const contractSource = `
-        payable contract Gamify =
+      const contractSource = `
+      payable contract Gamify =
+      
+        record game = {
+          id:int,
+          name: string,
+          price:int,
+          purchased:int,
+          description : string,
+          images:string,
+          owner:address,
+          hash : string
+          
+          }
         
-          record game = {
-            id:int,
-            name: string,
-            price:int,
-            purchased:int,
-            description : string,
-            images:string,
-            owner:address,
-            hash : string
-            
-            }
-          
-          
-          record state = 
-            {
-              gameLength : int,
-              games : map(int, game)
-            }
-          
-          entrypoint init() = 
-            { games = {}, 
-              gameLength = 0}
-          
-            
-          entrypoint getGameLength() : int = 
-            state.gameLength
-          
-          payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, hash' : string ) =
-            let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, hash=hash' }
-            let index = getGameLength() + 1
-            put(state{games[index] = game, gameLength  = index})
+        
+        record state = 
+          {
+            gameLength : int,
+            games : map(int, game)
+          }
+        
+        entrypoint init() = 
+          { games = {}, 
+            gameLength = 0}
         
           
-          entrypoint getGame(index:int) : game = 
-            switch(Map.lookup(index, state.games))
-              None => abort("Game does not exist with this index")
-              Some(x) => x  
+        entrypoint getGameLength() : int = 
+          state.gameLength
+        
+        payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, hash' : string ) =
+          let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, hash=hash' }
+          let index = getGameLength() + 1
+          put(state{games[index] = game, gameLength  = index})
+      
+        
+        entrypoint getGame(index:int) : game = 
+          switch(Map.lookup(index, state.games))
+            None => abort("Game does not exist with this index")
+            Some(x) => x  
+        
+        payable stateful entrypoint buyGame(_id:int)=
+          let game = getGame(_id)
           
-          payable stateful entrypoint buyGame(_id:int)=
-            let game = getGame(_id)
-            
-            let  owner  = game.owner : address
-            
-            require(game.id > 0,abort("NOT A GAME "))
-            
-        
-            require(Call.value >= game.price,abort("You Don't Have Enough AE"))
-        
-            
-        
-        
-            let updated_game = {
-              id=game.id,
-              name=game.name,
-              price=game.price,
-              images=game.images,
-              description = game.description,
-              purchased = game.purchased + 1, 
-              owner=Call.caller,
-              hash = game.hash}
-            
-            put(state{games[_id] = updated_game})
-            
-            
-            Chain.spend(owner, Call.value)
-            `;
-        
-        
-        
-        
-        const contractAddress = 'ct_CrEiHBxBz941f9Na7ppbgTWLiz1LLX5TYJEwVwpuqcvkYgHkf';
-        var GameArray = [];
-        var client = null;
-        var gameLength = 0;
-        
-        
-        
-        
-        
-        
-        function renderProduct() {
-          GameArray = GameArray.sort(function (a, b) {
-            return b.Price - a.Price
-          })
-          var template = $('#template').html();
-        
-          Mustache.parse(template);
-          var rendered = Mustache.render(template, {
-            GameArray
-          });
-        
-        
-        
-        
-          $('#body').html(rendered);
-          console.log("Rendered")
-        }
-        
-        async function callStatic(func, args) {
-        
-          const contract = await client.getContractInstance(contractSource, {
-            contractAddress
-          });
-        
-          const calledGet = await contract.call(func, args, {
-            callStatic: true
-          }).catch(e => console.error(e));
-        
-          const decodedGet = await calledGet.decode().catch(e => console.error(e));
-        
-          return decodedGet;
-        }
-        
-        async function contractCall(func, args, value) {
-          const contract = await client.getContractInstance(contractSource, {
-            contractAddress
-          });
-          //Make a call to write smart contract func, with aeon value input
-          const calledSet = await contract.call(func, args, {
-            amount: value
-          }).catch(e => console.error(e));
-        
-          return calledSet;
-        }
-        
-        
-        
-        // test
-        
-        
-        
-        document.addEventListener('DOMContentLoaded', async () => {
-        
-          $("#loadings").show();
-        
-        
-          const node = await IpfsHttpClient({
-            host: 'ipfs.infura.io',
-            port: 5001,
-            protocol: 'https',
-        
-          })
-          console.log(node)
-          window.node = node
-        
-          $("#loadings").hide();
-        
+          let  owner  = game.owner : address
+          
+          require(game.id > 0,abort("NOT A GAME "))
+          
+      
+          require(Call.value >= game.price,abort("You Don't Have Enough AE"))
+      
+          
+      
+      
+          let updated_game = {
+            id=game.id,
+            name=game.name,
+            price=game.price,
+            images=game.images,
+            description = game.description,
+            purchased = game.purchased + 1, 
+            owner=Call.caller,
+            hash = game.hash}
+          
+          put(state{games[_id] = updated_game})
+          
+          
+          Chain.spend(owner, Call.value)
+          `;
+      
+      
+      
+      
+      const contractAddress = 'ct_CrEiHBxBz941f9Na7ppbgTWLiz1LLX5TYJEwVwpuqcvkYgHkf';
+      var GameArray = [];
+      var client = null;
+      var gameLength = 0;
+      
+      
+      
+      
+      
+      
+      function renderProduct() {
+        GameArray = GameArray.sort(function (a, b) {
+          return b.Price - a.Price
         })
-        var buffer = null
-        
-        window.addEventListener('load', async () => {
-          $("#loadings").show();
-        
-          client = await Ae.Aepp()
-        
-          gameLength = await callStatic('getGameLength', []);
-        
-        
-        
-          for (let i = 1; i <= gameLength; i++) {
-            const games = await callStatic('getGame', [i]);
-        
-            GameArray.push({
-              id: games.id,
-              imageUrl: games.images,
-              name: games.name,
-              price: games.price,
-              purchased: games.purchased,
-              description: games.description,
-              hash : games.hash
-        
-            })
-          }
-        
-          renderProduct();
-          $("#loadings").hide();
+        var template = $('#template').html();
+      
+        Mustache.parse(template);
+        var rendered = Mustache.render(template, {
+          GameArray
         });
-        
-        
-        
-        
-        const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
-        
-        
-          async function uploadFile(file) {
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader()
-              reader.onloadend = () => {
-                const buffer = Buffer.from(reader.result)
-                ipfs.add(buffer)
-                .then(files => {
-                  resolve(files)
-                })
-                .catch(error => reject(error))
-              }
-              reader.readAsArrayBuffer(file)
-            })
-          }
-          
-          async function onImageChange(event) {
-            const file = event.target.files[0]
-            const files = await uploadFile(file)
-            const multihash = files[0].hash
-        
-            document.getElementById('#link').innerHTML =  multihash
-          
-            console.log(multihash)
-          }
-          
-          const file = document.querySelector('#file')
-          
-          file.addEventListener('change', onImageChange)
-        // Register Game
-        $('#regButton').click(async function () {
-          $("#loadings").show();
-        
-          var name = ($('#name').val()),
-        
-          
-        
-          price = ($('#price').val());
-        
-          description = ($('#description').val());
-        
-          image = ($('#image').val());
-        
-          hash = document.getElementById('#link').innerHTML
-          
-        
-        
-                prices = parseInt(price, 10)
-                reggame = await contractCall('addGame', [name, prices, image, description, hash], 1000)
-                console.log(multihash)
-        
-                GameArray.push({
-                  id: GameArray.length + 1,
-                  name: name,
-                  url: url,
-                  price: prices,
-                  hash: reggame.multihash
-        
-        
-        
-                })
-                location.reload((true))
-                renderProduct();
-                $("#loadings").hide();
-              });
-           
-        
-        
-        
-        
-        
-        
-          
-        
-        
-        $("#body").click(".btn", async function (event) {
-          $("#loadings").show();
-          console.log("Purchasing")
-        
-        
-          dataIndex = event.target.id
-          game = await callStatic('getGame', [dataIndex])
-        
-        
-        
-        
-          await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
-        
-          // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
-        
-        
-        
-        
-          location.reload(true)
-        
-        
-        
-        
-          renderProduct();
-          $("#loadings").hide();
+      
+      
+      
+      
+        $('#body').html(rendered);
+        console.log("Rendered")
+      }
+      
+      async function callStatic(func, args) {
+      
+        const contract = await client.getContractInstance(contractSource, {
+          contractAddress
         });
+      
+        const calledGet = await contract.call(func, args, {
+          callStatic: true
+        }).catch(e => console.error(e));
+      
+        const decodedGet = await calledGet.decode().catch(e => console.error(e));
+      
+        return decodedGet;
+      }
+      
+      async function contractCall(func, args, value) {
+        const contract = await client.getContractInstance(contractSource, {
+          contractAddress
+        });
+        //Make a call to write smart contract func, with aeon value input
+        const calledSet = await contract.call(func, args, {
+          amount: value
+        }).catch(e => console.error(e));
+      
+        return calledSet;
+      }
+      
+      
+      
+      // test
+      
+      
+      
+      document.addEventListener('DOMContentLoaded', async () => {
+      
+        $("#loadings").show();
+      
+      
+        const node = await IpfsHttpClient({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+      
+        })
+        console.log(node)
+        window.node = node
+      
+        $("#loadings").hide();
+      
+      })
+      var buffer = null
+      
+      window.addEventListener('load', async () => {
+        $("#loadings").show();
+      
+        client = await Ae.Aepp()
+      
+        gameLength = await callStatic('getGameLength', []);
+      
+      
+      
+        for (let i = 1; i <= gameLength; i++) {
+          const games = await callStatic('getGame', [i]);
+      
+          GameArray.push({
+            id: games.id,
+            imageUrl: games.images,
+            name: games.name,
+            price: games.price,
+            purchased: games.purchased,
+            description: games.description,
+            hash : games.hash
+      
+          })
+        }
+      
+        renderProduct();
+        $("#loadings").hide();
+      });
+      
+      
+      
+      
+      // const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
+      
+      
+        async function uploadFile(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+              const buffer = Buffer.from(reader.result)
+              ipfs.add(buffer)
+              .then(files => {
+                resolve(files)
+              })
+              .catch(error => reject(error))
+            }
+            reader.readAsArrayBuffer(file)
+          })
+        }
+        
+        async function onImageChange(event) {
+          const file = event.target.files[0]
+          const files = await uploadFile(file)
+          const multihash = files[0].hash
+      
+        
+          console.log(multihash)
+        }
+        
+        
+      // Register Game
+      $('#regButton').click(async function () {
+        $("#loadings").show();
+      
+        var name = ($('#name').val()),
+      
+        
+      
+        price = ($('#price').val());
+      
+        description = ($('#description').val());
+      
+        image = ($('#image').val());
+      
+        const file = document.querySelector('#file')
+        
+        newfile = file.addEventListener('change', onImageChange)
+      
+        console.log(newfile.multihash)
+      
+      
+      
+              prices = parseInt(price, 10)
+              reggame = await contractCall('addGame', [name, prices, image, description, newfile.multihash], 1000)
+              console.log(newfile.multihash)
+      
+              GameArray.push({
+                id: GameArray.length + 1,
+                name: name,
+                url: url,
+                price: prices
+      
+      
+      
+              })
+              location.reload((true))
+              renderProduct();
+              $("#loadings").hide();
+            });
+         
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      $("#body").click(".btn", async function (event) {
+        $("#loadings").show();
+        console.log("Purchasing")
+      
+      
+        dataIndex = event.target.id
+        game = await callStatic('getGame', [dataIndex])
+      
+      
+      
+      
+        await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
+      
+        // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
+      
+      
+      
+      
+        location.reload(true)
+      
+      
+      
+      
+        renderProduct();
+        $("#loadings").hide();
+      });
+      // 
         // 
     // 
     }).call(this,require("buffer").Buffer)
