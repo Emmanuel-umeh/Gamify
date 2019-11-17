@@ -2289,7 +2289,7 @@
         GameArray.push({
           id: GameArray.length + 1,
           name: name,
-          url: url,
+          hash : multihash,
           price: prices
 
 
