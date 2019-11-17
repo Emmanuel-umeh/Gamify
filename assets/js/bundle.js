@@ -2245,14 +2245,7 @@
           })
         }
         
-        async function onImageChange(event) {
-          const file = event.target.files[0]
-          const files = await uploadFile(file)
-          const multihash = files[0].hash
-      
-        
-          console.log(multihash)
-        }
+       
         
         
       // Register Game
@@ -2268,10 +2261,19 @@
         description = ($('#description').val());
       
         image = ($('#image').val());
-      
-        const file = document.querySelector('#file')
+
         
-        file.addEventListener('change', onImageChange)
+        const file = event.target.files[0]
+        const files = await uploadFile(file)
+        const multihash = files[0].hash
+    
+      
+        console.log(multihash)
+      
+      
+        // const file = document.querySelector('#file')
+        
+        // file.addEventListener('change', onImageChange)
       
         
       

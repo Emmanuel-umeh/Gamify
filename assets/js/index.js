@@ -200,14 +200,9 @@ window.addEventListener('load', async () => {
     })
   }
   
-  async function onImageChange(event) {
-    const file = event.target.files[0]
-    const files = await uploadFile(file)
-    const multihash = files[0].hash
-
   
-    console.log(multihash)
-  }
+    
+ 
   
   
 // Register Game
@@ -224,9 +219,16 @@ $('#regButton').click(async function () {
 
   image = ($('#image').val());
 
+  const file = event.target.files[0]
+    const files = await uploadFile(file)
+    const multihash = files[0].hash
+
+  
+    console.log(multihash)
+
   const file = document.querySelector('#file')
   
-  newfile = file.addEventListener('change', onImageChange)
+  // newfile = file.addEventListener('change', onImageChange)
 
   // console.log(newfile.multihash)
 
