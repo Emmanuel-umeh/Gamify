@@ -5,14 +5,14 @@ Instructions:
 
 To use this dapp you need to do the following:
 1. Copy this link https://emmanuel-umeh.github.io/Dacade_Challenge/ 
-2. Go to www.baseapps.com/browser
+2. Go to www.baseapps.com/browser in mobile view on your browser
 3. Paste the link in the field and enter
 
 
 To Purchase a game, simply click the purchase button on the game you like.
 
  
-Allow the popup that will be rendered.
+Click Allow on the popup that will be rendered.
 Wait for the loading gif to dissapear.
 A link will be generated for you in the console due to the limitations of baseapp.
 Copy this link and paste in a new tab.
