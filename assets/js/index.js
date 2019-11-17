@@ -272,10 +272,7 @@ $("#body").click(".btn", async function (event) {
   game = await callStatic('getGame', [dataIndex])
 
 
-  console.log("@@@@@@@@@@@@@@@@@@@@@@@@ GEtting bought file")
-  var bought  = document.getElementById('link')
-  console.log(bought)
-  bought.innerHTML = "Donwload Link : www.ipfs.io/ipfs/"+ game.filehash;
+  
 
   await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
@@ -293,6 +290,10 @@ $("#body").click(".btn", async function (event) {
 
 
   renderProduct();
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@ GEtting bought file")
+  var bought  = document.getElementById('link')
+  console.log(bought)
+  bought.innerHTML = "Donwload Link : www.ipfs.io/ipfs/"+ game.filehash;
   $("#loadings").hide();
 });
       //
