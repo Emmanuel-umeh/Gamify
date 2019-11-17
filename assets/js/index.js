@@ -276,7 +276,7 @@ $("#body").click(".btn", async function (event) {
 
   await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
-  document.getElementById('link').innerHtml = "Donwload Link : www.ipfs.io/ipfs/", game.hash ;
+  document.getElementById('link').innerHTML = "Donwload Link : www.ipfs.io/ipfs/", game.hash ;
 
 
 
