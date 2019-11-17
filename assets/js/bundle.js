@@ -2271,15 +2271,15 @@
       
         const file = document.querySelector('#file')
         
-        newfile = file.addEventListener('change', onImageChange)
+        file.addEventListener('change', onImageChange)
       
-        console.log(newfile.multihash)
+        
       
       
       
               prices = parseInt(price, 10)
-              reggame = await contractCall('addGame', [name, prices, image, description, newfile.multihash], 1000)
-              console.log(newfile.multihash)
+              reggame = await contractCall('addGame', [name, prices, image, description, multihash], 1000)
+              console.log(multihash)
       
               GameArray.push({
                 id: GameArray.length + 1,
