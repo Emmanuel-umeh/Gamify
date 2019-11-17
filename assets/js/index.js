@@ -1,77 +1,77 @@
 const contractSource = `
-      payable contract Gamify =
+payable contract Gamify =
       
-        record game = {
-          id:int,
-          name: string,
-          price:int,
-          purchased:int,
-          description : string,
-          images:string,
-          owner:address,
-          hash : string
-          
-          }
-        
-        
-        record state = 
-          {
-            gameLength : int,
-            games : map(int, game)
-          }
-        
-        entrypoint init() = 
-          { games = {}, 
-            gameLength = 0}
-        
-          
-        entrypoint getGameLength() : int = 
-          state.gameLength
-        
-        payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, hash' : string ) =
-          let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, hash=hash' }
-          let index = getGameLength() + 1
-          put(state{games[index] = game, gameLength  = index})
-      
-        
-        entrypoint getGame(index:int) : game = 
-          switch(Map.lookup(index, state.games))
-            None => abort("Game does not exist with this index")
-            Some(x) => x  
-        
-        payable stateful entrypoint buyGame(_id:int)=
-          let game = getGame(_id)
-          
-          let  owner  = game.owner : address
-          
-          require(game.id > 0,abort("NOT A GAME "))
-          
-      
-          require(Call.value >= game.price,abort("You Don't Have Enough AE"))
-      
-          
-      
-      
-          let updated_game = {
-            id=game.id,
-            name=game.name,
-            price=game.price,
-            images=game.images,
-            description = game.description,
-            purchased = game.purchased + 1, 
-            owner=Call.caller,
-            hash = game.hash}
-          
-          put(state{games[_id] = updated_game})
-          
-          
-          Chain.spend(owner, Call.value)
+record game = {
+  id:int,
+  name: string,
+  price:int,
+  purchased:int,
+  description : string,
+  images:string,
+  owner:address,
+  filehash : string
+  
+  }
+
+
+record state = 
+  {
+    gameLength : int,
+    games : map(int, game)
+  }
+
+entrypoint init() = 
+  { games = {}, 
+    gameLength = 0}
+
+  
+entrypoint getGameLength() : int = 
+  state.gameLength
+
+payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, filehash' : string ) =
+  let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, filehash=filehash' }
+  let index = getGameLength() + 1
+  put(state{games[index] = game, gameLength  = index})
+
+
+entrypoint getGame(index:int) : game = 
+  switch(Map.lookup(index, state.games))
+    None => abort("Game does not exist with this index")
+    Some(x) => x  
+
+payable stateful entrypoint buyGame(_id:int)=
+  let game = getGame(_id)
+  
+  let  owner  = game.owner : address
+  
+  require(game.id > 0,abort("NOT A GAME "))
+  
+
+  require(Call.value >= game.price,abort("You Don't Have Enough AE"))
+
+  
+
+
+  let updated_game = {
+    id=game.id,
+    name=game.name,
+    price=game.price,
+    images=game.images,
+    description = game.description,
+    purchased = game.purchased + 1, 
+    owner=Call.caller,
+    filehash = game.filehash}
+  
+  put(state{games[_id] = updated_game})
+  
+  
+  Chain.spend(owner, Call.value)
           `;
 
 
 
 
-const contractAddress = 'ct_CrEiHBxBz941f9Na7ppbgTWLiz1LLX5TYJEwVwpuqcvkYgHkf';
+const contractAddress = 'ct_2AtvoSEY17oVgjojn9ygadfE6JULR3JnKZzCP4Ymq8agveqnLD';
 var GameArray = [];
 var client = null;
 var gameLength = 0;
@@ -243,7 +243,7 @@ $('#regButton').click(async function () {
   GameArray.push({
     id: GameArray.length + 1,
     name: name,
-    hash : multihash,
+    hash: multihash,
     price: prices
 
 
@@ -276,7 +276,7 @@ $("#body").click(".btn", async function (event) {
 
   await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
-  document.getElementById('link').innerHTML = "Donwload Link : www.ipfs.io/ipfs/", game.hash ;
+  document.getElementById('link').innerHTML = "Donwload Link : www.ipfs.io/ipfs/", game.hash;
 
 
 
