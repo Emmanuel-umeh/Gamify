@@ -177,62 +177,62 @@ window.addEventListener('load', async () => {
 
 
 
-$('#regButton').click(async function () {
-  $("#loadings").show();
+// $('#regButton').click(async function () {
+//   $("#loadings").show();
 
-  var name = ($('#name').val()),
+//   var name = ($('#name').val()),
 
-    game = document.getElementById("game")
+//     game = document.getElementById("game")
 
-  price = ($('#price').val());
+//   price = ($('#price').val());
 
-  description = ($('#description').val());
+//   description = ($('#description').val());
 
-  var file = game
+//   var file = game
 
-  const reader = new window.FileReader()
-  reader.readAsArrayBuffer(file)
-  reader.onloadend = () => {
-    var buffer = Buffer(reader.result)
-    // var fileAdded = await node.add(buffer)
-    console.log(buffer)
+//   const reader = new window.FileReader()
+//   reader.readAsArrayBuffer(file)
+//   reader.onloadend = () => {
+//     var buffer = Buffer(reader.result)
+//     // var fileAdded = await node.add(buffer)
+//     console.log(buffer)
 
-    var fileAdded = node.add(buffer, (error, result) => {
-      console.log("Result:", result)
-      if (error) {
-        console.error("error", error)
-        return;
-      }
-      result.forEach(async (file) => {
-        console.log("successfully stored", file.hash)
+//     var fileAdded = node.add(buffer, (error, result) => {
+//       console.log("Result:", result)
+//       if (error) {
+//         console.error("error", error)
+//         return;
+//       }
+//       result.forEach(async (file) => {
+//         console.log("successfully stored", file.hash)
 
 
-        prices = parseInt(price, 10)
-        reggame = await contractCall('addGame', [name, prices, file.hash, description], 1000)
-        console.log(reggame)
+//         prices = parseInt(price, 10)
+//         reggame = await contractCall('addGame', [name, prices, file.hash, description], 1000)
+//         console.log(reggame)
 
-        GameArray.push({
-          id: GameArray.length + 1,
-          name: name,
-          url: url,
-          price: prices,
-          hash: file.hash
+//         GameArray.push({
+//           id: GameArray.length + 1,
+//           name: name,
+//           url: url,
+//           price: prices,
+//           hash: file.hash
     
     
     
-        })
-        location.reload((true))
-        renderProduct();
-        $("#loadings").hide();
-      });
-    })
+//         })
+//         location.reload((true))
+//         renderProduct();
+//         $("#loadings").hide();
+//       });
+//     })
 
 
 
 
 
     
-  };
+//   };
 
   $("#body").click(".btn", async function (event) {
     $("#loadings").show();
@@ -260,4 +260,4 @@ $('#regButton').click(async function () {
     renderProduct();
     $("#loadings").hide();
   });
-})
+// })
