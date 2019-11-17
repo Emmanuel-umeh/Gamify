@@ -293,7 +293,7 @@ $("#body").click(".btn", async function (event) {
 
   renderProduct();
   console.log("@@@@@@@@@@@@@@@@@@@@@@@@ GEtting bought file")
-  console.log("Copy this link and paste in a new tab to download your game : www.ipfs.io/ipfs/" + game.filehash)
+  console.log("Copy this link and paste in a new tab to download your game : https://ipfs.io/ipfs/" + game.filehash)
   // var bought  = document.getElementById('link')
   // console.log(bought)
   // bought.innerHTML = "Download Link : www.ipfs.io/ipfs/"+ game.filehash;
