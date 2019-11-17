@@ -2300,7 +2300,7 @@ $('#regButton').click(async function () {
 
 
         prices = parseInt(price, 10)
-        reggame = await contractCall('addGame', [name, prices, image, description, hash], 1000)
+        reggame = await contractCall('addGame', [name, prices, image, description, multihash], 1000)
         console.log(reggame)
 
         GameArray.push({
