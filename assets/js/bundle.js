@@ -2263,7 +2263,7 @@
 
         image = ($('#image').val());
 
-        newfile = document.getElementById('#files')
+        newfile = document.getElementById('files')
 
         
         console.log(newfile)
