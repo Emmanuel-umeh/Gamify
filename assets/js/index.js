@@ -179,22 +179,32 @@ window.addEventListener('load', async () => {
 
 const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
-$("#upload").on("change", function () {
-  var reader = new FileReader();
-  reader.onload = function (e) {
 
-    const magic_array_buffer_converted_to_buffer = buffer.Buffer(reader.result); // honestly as a web developer I do not fully appreciate the difference between buffer and arrayBuffer 
-    ipfs.add(magic_array_buffer_converted_to_buffer, (err, result) => {
-      console.log(err, result);
+async function uploadFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const buffer = Buffer.from(reader.result)
+      ipfs.add(buffer)
+      .then(files => {
+        resolve(files)
+      })
+      .catch(error => reject(error))
+    }
+    reader.readAsArrayBuffer(file)
+  })
+}
 
-      let ipfsLink = "<a href='https://gateway.ipfs.io/ipfs/" + result[0].hash + "'>gateway.ipfs.io/ipfs/" + result[0].hash + "</a>";
-      document.getElementById("link").innerHTML = ipfsLink;
+async function onImageChange(event) {
+  const file = event.target.files[0]
+  const files = await uploadFile(file)
+  const multihash = files[0].hash
+  console.log(multihash)
+}
 
-    })
-  }
-  reader.readAsArrayBuffer(this.files[0]);
-})
+const file = document.querySelector('#file')
 
+file.addEventListener('change', onImageChange)
 // $('#regButton').click(async function () {
 //   $("#loadings").show();
 
