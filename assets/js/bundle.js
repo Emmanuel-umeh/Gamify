@@ -2263,8 +2263,10 @@
 
         image = ($('#image').val());
 
-        const file = document.querySelector('#file')
+        newfile = document.getElementById('#file')
         console.log(file)
+
+        file = newFile.files[0]
 
 
         const files = await uploadFile(file)
