@@ -217,7 +217,7 @@ $('#regButton').click(async function () {
 
   image = ($('#image').val());
 
-  newfile = document.getElementById('#files')
+  newfile = document.getElementById('customfiles')
 
 
   console.log(newfile)
