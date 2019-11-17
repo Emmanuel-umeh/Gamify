@@ -228,12 +228,12 @@ $('#regButton').click(async function () {
   
   newfile = file.addEventListener('change', onImageChange)
 
-  console.log(newfile.multihash)
+  // console.log(newfile.multihash)
 
 
 
         prices = parseInt(price, 10)
-        reggame = await contractCall('addGame', [name, prices, image, description, newfile.multihash], 1000)
+        reggame = await contractCall('addGame', [name, prices, image, description, multihash], 1000)
         console.log(newfile.multihash)
 
         GameArray.push({
