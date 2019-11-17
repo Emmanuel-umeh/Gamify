@@ -127,20 +127,6 @@ async function contractCall(func, args, value) {
 
 // test
 
-    ipfscloud.addEventListener("icevent", function(event) {
-
-        console.log(event.detail);
-
-        if (event.detail.status === "success") {
-            let ipfsLink = "https://gateway.ipfs.io/ipfs/" + event.detail.data.path;
-            document.getElementById("IpfsGatewayUploadedLink").innerHTML = ipfsLink;
-
-        } else {
-            console.log(event.detail);
-            alert("something happened, check console");
-        }
-    });
-    
 
 
 document.addEventListener('DOMContentLoaded', async () => {
