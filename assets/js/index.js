@@ -177,44 +177,25 @@ window.addEventListener('load', async () => {
 
 
 
+const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
+$("#upload").on("change", function () {
+  var reader = new FileReader();
+  reader.onload = function (e) {
 
+    const magic_array_buffer_converted_to_buffer = buffer.Buffer(reader.result); // honestly as a web developer I do not fully appreciate the difference between buffer and arrayBuffer 
+    ipfs.add(magic_array_buffer_converted_to_buffer, (err, result) => {
+      console.log(err, result);
 
-$('#regButton').click(async function () {
+      let ipfsLink = "<a href='https://gateway.ipfs.io/ipfs/" + result[0].hash + "'>gateway.ipfs.io/ipfs/" + result[0].hash + "</a>";
+      document.getElementById("link").innerHTML = ipfsLink;
 
-  const ipfs = ipfsApi({
-    host: 'localhost',
-    port: '5001',
-    protocol: 'http'
-  })
-  
-  async function uploadFile(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        const buffer = Buffer.from(reader.result)
-        ipfs.add(buffer)
-        .then(files => {
-          resolve(files)
-        })
-        .catch(error => reject(error))
-      }
-      reader.readAsArrayBuffer(file)
     })
   }
-  
-  async function onImageChange(event) {
-    const file = event.target.files[0]
-    const files = await uploadFile(file)
-    const multihash = files[0].hash
-    console.log(multihash)
-  }
-  
-  const file = document.querySelector('#file')
-  
-  file.addEventListener('change', onImageChange)
-
+  reader.readAsArrayBuffer(this.files[0]);
 })
+
+// $('#regButton').click(async function () {
 //   $("#loadings").show();
 
 //   var name = ($('#name').val()),
@@ -254,9 +235,9 @@ $('#regButton').click(async function () {
 //           url: url,
 //           price: prices,
 //           hash: file.hash
-    
-    
-    
+
+
+
 //         })
 //         location.reload((true))
 //         renderProduct();
@@ -268,33 +249,33 @@ $('#regButton').click(async function () {
 
 
 
-    
+
 //   };
 
-  $("#body").click(".btn", async function (event) {
-    $("#loadings").show();
-    console.log("Purchasing")
+$("#body").click(".btn", async function (event) {
+  $("#loadings").show();
+  console.log("Purchasing")
 
 
-    dataIndex = event.target.id
-    game = await callStatic('getGame', [dataIndex])
-
-
-
-
-    await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
-
-    // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
+  dataIndex = event.target.id
+  game = await callStatic('getGame', [dataIndex])
 
 
 
 
-    location.reload(true)
+  await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
+
+  // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
 
 
 
 
-    renderProduct();
-    $("#loadings").hide();
-  });
+  location.reload(true)
+
+
+
+
+  renderProduct();
+  $("#loadings").hide();
+});
 // })
