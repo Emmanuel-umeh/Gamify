@@ -272,13 +272,16 @@ $("#body").click(".btn", async function (event) {
   game = await callStatic('getGame', [dataIndex])
 
 
-
-
-  await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
-
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@ GEtting bought file")
   var bought  = document.getElementById('link')
   console.log(bought)
   bought.innerHTML = "Donwload Link : www.ipfs.io/ipfs/"+ game.hash;
+
+  await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
+
+  
+
+  
   
 
 
