@@ -210,21 +210,8 @@ window.addEventListener('load', async () => {
 // file.addEventListener('change', onImageChange)
 
 
-// Register Game
-$('#regButton').click(async function () {
-  $("#loadings").show();
 
-  var name = ($('#name').val()),
-
-  
-
-  price = ($('#price').val());
-
-  description = ($('#description').val());
-
-  image = ($('#image').val());
-
-  const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
+const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 
   async function uploadFile(file) {
@@ -252,6 +239,21 @@ $('#regButton').click(async function () {
   const file = document.querySelector('#file')
   
   file.addEventListener('change', onImageChange)
+// Register Game
+$('#regButton').click(async function () {
+  $("#loadings").show();
+
+  var name = ($('#name').val()),
+
+  
+
+  price = ($('#price').val());
+
+  description = ($('#description').val());
+
+  image = ($('#image').val());
+
+  
 
 
         prices = parseInt(price, 10)
@@ -263,7 +265,7 @@ $('#regButton').click(async function () {
           name: name,
           url: url,
           price: prices,
-          hash: file.hash
+          hash: reggame.multihash
 
 
 
