@@ -2250,7 +2250,7 @@
             const files = await uploadFile(file)
             const multihash = files[0].hash
         
-            document.getElementById('#link').innerHTML() =  multihash
+            document.getElementById('#link').innerHTML =  multihash
           
             console.log(multihash)
           }
