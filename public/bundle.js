@@ -184,7 +184,7 @@ window.addEventListener('load', async () => {
 
 
 
-// const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
+const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 
 async function uploadFile(file) {
