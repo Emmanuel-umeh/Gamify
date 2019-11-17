@@ -2321,10 +2321,10 @@
 
 
         await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
+        
 
-        document.getElementsById('successful').innerHtml = "Download link : www.ipfs.io/ipfs/", game.hash;
-
-
+        document.getElementById('link').innerHtml = "Donwload Link : www.ipfs.io/ipfs/", game.hash ;
+      
 
 
         // location.reload(true)
@@ -2336,7 +2336,7 @@
         $("#loadings").hide();
       });
       // 
-      // 
+      //s
       // 
     }).call(this, require("buffer").Buffer)
   }, { "buffer": 2 }]
