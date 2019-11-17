@@ -172,7 +172,7 @@ window.addEventListener('load', async () => {
       price: games.price,
       purchased: games.purchased,
       description: games.description,
-      hash: games.hash
+      hash: games.filehash
 
     })
   }
