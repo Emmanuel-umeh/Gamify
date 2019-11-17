@@ -181,10 +181,10 @@ window.addEventListener('load', async () => {
 
 
 
-
+// This connects youtopublic ipfs gateway
 const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
-
+// Converts the uploaded file to a buffer which is required to upload to an ipfs node
 async function uploadFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -209,13 +209,13 @@ $('#regButton').click(async function () {
 
   var name = ($('#name').val()),
 
-
-
-    price = ($('#price').val());
+  price = ($('#price').val());
 
   description = ($('#description').val());
 
   image = ($('#image').val());
+
+  // gets the uploaded file
 
   newfile = document.getElementById('customfiles')
 
@@ -225,16 +225,9 @@ $('#regButton').click(async function () {
 
   file = newfile.files[0]
 
-
+  // waits for the uploadFile function to be called
   const files = await uploadFile(file)
   const multihash = files[0].hash
-
-
-  console.log(multihash)
-
-
-
-
 
   prices = parseInt(price, 10)
   reggame = await contractCall('addGame', [name, prices, image, description, multihash], 1000)
@@ -267,27 +260,14 @@ $("#body").click(".btn", async function (event) {
   $("#loadings").show();
   console.log("Purchasing")
 
-
+  // targets the element being clicked
   dataIndex = event.target.id
+
+  // calls the getGame function from the smart contract
   game = await callStatic('getGame', [dataIndex])
 
 
-  
-
   await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
-
-  
-
-  
-  
-
-
-
-
-  // location.reload(true)
-
-
-
 
   renderProduct();
   console.log("@@@@@@@@@@@@@@@@@@@@@@@@ GEtting bought file")
@@ -297,4 +277,4 @@ $("#body").click(".btn", async function (event) {
   // bought.innerHTML = "Download Link : www.ipfs.io/ipfs/"+ game.filehash;
   $("#loadings").hide();
 });
-      //
+   
