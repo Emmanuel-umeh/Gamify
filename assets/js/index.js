@@ -8,7 +8,8 @@ payable contract Gamify =
     purchased:int,
     description : string,
     images:string,
-    owner:address
+    owner:address,
+    hash : string
     
     }
   
@@ -27,8 +28,8 @@ payable contract Gamify =
   entrypoint getGameLength() : int = 
     state.gameLength
   
-  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string ) =
-    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller}
+  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, hash' : string ) =
+    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, hash=hash' }
     let index = getGameLength() + 1
     put(state{games[index] = game, gameLength  = index})
 
@@ -58,7 +59,8 @@ payable contract Gamify =
       images=game.images,
       description = game.description,
       purchased = game.purchased + 1, 
-      owner=Call.caller}
+      owner=Call.caller,
+      hash = game.hash}
     
     put(state{games[_id] = updated_game})
     
@@ -166,7 +168,8 @@ window.addEventListener('load', async () => {
       name: games.name,
       price: games.price,
       purchased: games.purchased,
-      description: games.description
+      description: games.description,
+      hash : games.hash
 
     })
   }
@@ -177,90 +180,107 @@ window.addEventListener('load', async () => {
 
 
 
-const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
+// const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 
-async function uploadFile(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const buffer = Buffer.from(reader.result)
-      ipfs.add(buffer)
-      .then(files => {
-        resolve(files)
-      })
-      .catch(error => reject(error))
-    }
-    reader.readAsArrayBuffer(file)
-  })
-}
+// async function uploadFile(file) {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader()
+//     reader.onloadend = () => {
+//       const buffer = Buffer.from(reader.result)
+//       ipfs.add(buffer)
+//       .then(files => {
+//         resolve(files)
+//       })
+//       .catch(error => reject(error))
+//     }
+//     reader.readAsArrayBuffer(file)
+//   })
+// }
 
-async function onImageChange(event) {
-  const file = event.target.files[0]
-  const files = await uploadFile(file)
-  const multihash = files[0].hash
-  console.log(multihash)
-}
+// async function onImageChange(event) {
+//   const file = event.target.files[0]
+//   const files = await uploadFile(file)
+//   const multihash = files[0].hash
+//   console.log(multihash)
+// }
 
-const file = document.querySelector('#file')
+// const file = document.querySelector('#file')
 
-file.addEventListener('change', onImageChange)
-// $('#regButton').click(async function () {
-//   $("#loadings").show();
-
-//   var name = ($('#name').val()),
-
-//     game = document.getElementById("game")
-
-//   price = ($('#price').val());
-
-//   description = ($('#description').val());
-
-//   var file = game
-
-//   const reader = new window.FileReader()
-//   reader.readAsArrayBuffer(file)
-//   reader.onloadend = () => {
-//     var buffer = Buffer(reader.result)
-//     // var fileAdded = await node.add(buffer)
-//     console.log(buffer)
-
-//     var fileAdded = node.add(buffer, (error, result) => {
-//       console.log("Result:", result)
-//       if (error) {
-//         console.error("error", error)
-//         return;
-//       }
-//       result.forEach(async (file) => {
-//         console.log("successfully stored", file.hash)
+// file.addEventListener('change', onImageChange)
 
 
-//         prices = parseInt(price, 10)
-//         reggame = await contractCall('addGame', [name, prices, file.hash, description], 1000)
-//         console.log(reggame)
+// Register Game
+$('#regButton').click(async function () {
+  $("#loadings").show();
 
-//         GameArray.push({
-//           id: GameArray.length + 1,
-//           name: name,
-//           url: url,
-//           price: prices,
-//           hash: file.hash
+  var name = ($('#name').val()),
 
+  
 
+  price = ($('#price').val());
 
-//         })
-//         location.reload((true))
-//         renderProduct();
-//         $("#loadings").hide();
-//       });
-//     })
+  description = ($('#description').val());
+
+  image = ($('#image').val());
+
+  const ipfs = window.IpfsHttpClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 
+  async function uploadFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const buffer = Buffer.from(reader.result)
+        ipfs.add(buffer)
+        .then(files => {
+          resolve(files)
+        })
+        .catch(error => reject(error))
+      }
+      reader.readAsArrayBuffer(file)
+    })
+  }
+  
+  async function onImageChange(event) {
+    const file = event.target.files[0]
+    const files = await uploadFile(file)
+    const multihash = files[0].hash
+    console.log(multihash)
+  }
+  
+  const file = document.querySelector('#file')
+  
+  file.addEventListener('change', onImageChange)
+
+
+        prices = parseInt(price, 10)
+        reggame = await contractCall('addGame', [name, prices, image, description, hash], 1000)
+        console.log(reggame)
+
+        GameArray.push({
+          id: GameArray.length + 1,
+          name: name,
+          url: url,
+          price: prices,
+          hash: file.hash
+
+
+
+        })
+        location.reload((true))
+        renderProduct();
+        $("#loadings").hide();
+      });
+   
 
 
 
 
-//   };
+
+
+  
+
 
 $("#body").click(".btn", async function (event) {
   $("#loadings").show();
@@ -288,4 +308,4 @@ $("#body").click(".btn", async function (event) {
   renderProduct();
   $("#loadings").hide();
 });
-// })
+// 

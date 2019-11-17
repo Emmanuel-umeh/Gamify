@@ -7,7 +7,8 @@ payable contract Gamify =
     purchased:int,
     description : string,
     images:string,
-    owner:address
+    owner:address,
+    hash : string
     
     }
   
@@ -26,8 +27,8 @@ payable contract Gamify =
   entrypoint getGameLength() : int = 
     state.gameLength
   
-  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string ) =
-    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller}
+  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, hash' : string ) =
+    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, hash=hash' }
     let index = getGameLength() + 1
     put(state{games[index] = game, gameLength  = index})
 
@@ -57,7 +58,8 @@ payable contract Gamify =
       images=game.images,
       description = game.description,
       purchased = game.purchased + 1, 
-      owner=Call.caller}
+      owner=Call.caller,
+      hash = game.hash}
     
     put(state{games[_id] = updated_game})
     
