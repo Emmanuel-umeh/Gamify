@@ -1,71 +1,71 @@
 const contractSource = `
 payable contract Gamify =
       
-record game = {
-  id:int,
-  name: string,
-  price:int,
-  purchased:int,
-  description : string,
-  images:string,
-  owner:address,
-  filehash : string
-  
-  }
+  record game = {
+    id:int,
+    name: string,
+    price:int,
+    purchased:int,
+    description : string,
+    images:string,
+    owner:address,
+    filehash : string
+    
+    }
 
 
-record state = 
-  {
-    gameLength : int,
-    games : map(int, game)
-  }
+  record state = 
+    {
+      gameLength : int,
+      games : map(int, game)
+    }
 
-entrypoint init() = 
-  { games = {}, 
-    gameLength = 0}
+  entrypoint init() = 
+    { games = {}, 
+      gameLength = 0}
 
-  
-entrypoint getGameLength() : int = 
-  state.gameLength
+    
+  entrypoint getGameLength() : int = 
+    state.gameLength
 
-payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, filehash' : string ) =
-  let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, filehash=filehash' }
-  let index = getGameLength() + 1
-  put(state{games[index] = game, gameLength  = index})
-
-
-entrypoint getGame(index:int) : game = 
-  switch(Map.lookup(index, state.games))
-    None => abort("Game does not exist with this index")
-    Some(x) => x  
-
-payable stateful entrypoint buyGame(_id:int)=
-  let game = getGame(_id)
-  
-  let  owner  = game.owner : address
-  
-  require(game.id > 0,abort("NOT A GAME "))
-  
-
-  require(Call.value >= game.price,abort("You Don't Have Enough AE"))
-
-  
+  payable stateful entrypoint addGame(name':string, price':int, images':string, description' : string, filehash' : string ) =
+    let game = {id=getGameLength() + 1, name=name', price=price', description = description', images=images',purchased=0, owner=Call.caller, filehash=filehash' }
+    let index = getGameLength() + 1
+    put(state{games[index] = game, gameLength  = index})
 
 
-  let updated_game = {
-    id=game.id,
-    name=game.name,
-    price=game.price,
-    images=game.images,
-    description = game.description,
-    purchased = game.purchased + 1, 
-    owner=Call.caller,
-    filehash = game.filehash}
-  
-  put(state{games[_id] = updated_game})
-  
-  
-  Chain.spend(owner, Call.value)
+  entrypoint getGame(index:int) : game = 
+    switch(Map.lookup(index, state.games))
+      None => abort("Game does not exist with this index")
+      Some(x) => x  
+
+  payable stateful entrypoint buyGame(_id:int)=
+    let game = getGame(_id)
+    
+    let  owner  = game.owner : address
+    
+    require(game.id > 0,abort("NOT A GAME "))
+    
+
+    require(Call.value >= game.price,abort("You Don't Have Enough AE"))
+
+    
+
+
+    let updated_game = {
+      id=game.id,
+      name=game.name,
+      price=game.price,
+      images=game.images,
+      description = game.description,
+      purchased = game.purchased + 1, 
+      owner=Call.caller,
+      filehash = game.filehash}
+    
+    put(state{games[_id] = updated_game})
+    
+    
+    Chain.spend(owner, Call.value)
           `;
 
 
