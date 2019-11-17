@@ -276,12 +276,12 @@ $("#body").click(".btn", async function (event) {
 
   await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
-  // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
+  document.getElementById('link').innerHtml = "Donwload Link : www.ipfs.io/ipfs/", game.hash ;
 
 
 
 
-  location.reload(true)
+  // location.reload(true)
 
 
 
