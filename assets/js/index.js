@@ -69,9 +69,8 @@ payable contract Gamify =
 
 
 
-const contractAddress = 'ct_2n7dJxZndExSBveqEwA1e71ete5ugGqrS6Yi3wQ5UNdqyFv6aB';
+const contractAddress = 'ct_rsiFtDyMSRZ5bEbiJet9HTs9yxQqN5a7wQMeNQXTM1UuvFaQe';
 var GameArray = [];
-var SoldArray = []
 var client = null;
 var gameLength = 0;
 
@@ -102,13 +101,13 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {
     contractAddress
   });
- 
+
   const calledGet = await contract.call(func, args, {
     callStatic: true
   }).catch(e => console.error(e));
-  
+
   const decodedGet = await calledGet.decode().catch(e => console.error(e));
- 
+
   return decodedGet;
 }
 
@@ -124,6 +123,45 @@ async function contractCall(func, args, value) {
   return calledSet;
 }
 
+
+
+// test
+
+    ipfscloud.addEventListener("icevent", function(event) {
+
+        console.log(event.detail);
+
+        if (event.detail.status === "success") {
+            let ipfsLink = "https://gateway.ipfs.io/ipfs/" + event.detail.data.path;
+            document.getElementById("IpfsGatewayUploadedLink").innerHTML = ipfsLink;
+
+        } else {
+            console.log(event.detail);
+            alert("something happened, check console");
+        }
+    });
+    
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  $("#loadings").show();
+
+
+  const node = await IpfsHttpClient({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+
+  })
+  console.log(node)
+  window.node = node
+
+  $("#loadings").hide();
+
+})
+var buffer = null
+
 window.addEventListener('load', async () => {
   $("#loadings").show();
 
@@ -136,20 +174,20 @@ window.addEventListener('load', async () => {
   for (let i = 1; i <= gameLength; i++) {
     const games = await callStatic('getGame', [i]);
 
-      GameArray.push({
-        id: games.id,
-        imageUrl: games.images,
-        name: games.name,
-        price: games.price,
-        purchased: games.purchased,
-        description : games.description
+    GameArray.push({
+      id: games.id,
+      imageUrl: games.images,
+      name: games.name,
+      price: games.price,
+      purchased: games.purchased,
+      description: games.description
 
-      })
-    }
+    })
+  }
 
-    renderProduct();
-    $("#loadings").hide();
-  });
+  renderProduct();
+  $("#loadings").hide();
+});
 
 
 
@@ -158,56 +196,82 @@ $('#regButton').click(async function () {
 
   var name = ($('#name').val()),
 
-    url = ($('#imageUrl').val()),
+    game = document.getElementById("game")
 
-    price = ($('#price').val());
+  price = ($('#price').val());
 
   description = ($('#description').val());
-  prices = parseInt(price, 10)
-  await contractCall('addGame', [name, prices, url, description], 1000)
-  console.log("registering")
+
+  var file = game
+
+  const reader = new window.FileReader()
+  reader.readAsArrayBuffer(file)
+  reader.onloadend = () => {
+    var buffer = Buffer(reader.result)
+    // var fileAdded = await node.add(buffer)
+    console.log(buffer)
+
+    var fileAdded = node.add(buffer, (error, result) => {
+      console.log("Result:", result)
+      if (error) {
+        console.error("error", error)
+        return;
+      }
+      result.forEach(async (file) => {
+        console.log("successfully stored", file.hash)
+
+
+        prices = parseInt(price, 10)
+        reggame = await contractCall('addGame', [name, prices, file.hash, description], 1000)
+        console.log(reggame)
+
+        GameArray.push({
+          id: GameArray.length + 1,
+          name: name,
+          url: url,
+          price: prices,
+          hash: file.hash
+    
+    
+    
+        })
+        location.reload((true))
+        renderProduct();
+        $("#loadings").hide();
+      });
+    })
 
 
 
 
-  GameArray.push({
-    id: GameArray.length + 1,
-    name: name,
-    url: url,
-    price: prices,
-    description: description
+
+    
+  };
+
+  $("#body").click(".btn", async function (event) {
+    $("#loadings").show();
+    console.log("Purchasing")
+
+
+    dataIndex = event.target.id
+    game = await callStatic('getGame', [dataIndex])
 
 
 
-  })
-  location.reload((true))
-  renderProduct();
-  $("#loadings").hide();
-});
 
-$("#body").click(".btn", async function (event) {
-  $("#loadings").show();
-  console.log("Purchasing")
-
-
-   dataIndex = event.target.id
-   game = await callStatic('getGame', [dataIndex])
- 
-
-
-  
     await contractCall('buyGame', [dataIndex], parseInt(game.price, 10))
 
     // document.getElementsByName('successful').innerHtml = "Purchased Successfully" ;
-    
 
- 
-    
+
+
+
     location.reload(true)
-    
 
 
 
-  renderProduct();
-  $("#loadings").hide();
-});
+
+    renderProduct();
+    $("#loadings").hide();
+  });
+})
