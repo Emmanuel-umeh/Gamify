@@ -25,6 +25,9 @@ Enjoy:)
 
 
 To Register a game, scroll down to the Register form and fill the required details correctly.
+
+!!!!!!!!!!!!!!!!!!!!!!!!! Ensure your GAME file is compressed in a ZIP FORMAT before uploading it!!!!!!!!!!!!!!!!!!!!!!!!
+
 ![Screenshots!](assets/img/screenshots/register.png "Screenshots")
 Allow the prompt that will be created. 
 Wait for your games to be added to the list of games on the main screen.
